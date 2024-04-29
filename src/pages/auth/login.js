@@ -25,8 +25,8 @@ const Page = () => {
   const [method, setMethod] = useState('email');
   const formik = useFormik({
     initialValues: {
-      email: 'demo@adlinc.com',
-      password: 'Password123!',
+      email: '',
+      password: '',
       submit: null
     },
     validationSchema: Yup.object({
@@ -42,6 +42,7 @@ const Page = () => {
     }),
     onSubmit: async (values, helpers) => {
       try {
+      
         await auth.signIn(values.email, values.password);
         router.push('/');
       } catch (err) {
@@ -136,7 +137,8 @@ const Page = () => {
             </Tabs>
             {method === 'email' && (
               <form
-                noValidate
+                //noValidate
+                //use our own Login funcyiom
                 onSubmit={formik.handleSubmit}
               >
                 <Stack spacing={3}>

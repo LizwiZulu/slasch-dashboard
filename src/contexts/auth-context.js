@@ -1,6 +1,8 @@
 import { createContext, useContext, useEffect, useReducer, useRef } from 'react';
 import PropTypes from 'prop-types';
-
+//import axios from 'src/api/axios';
+import axios from 'axios';
+const url='https://adlinc-api.onrender.com/api/slaschapp/auth/login/user'
 const HANDLERS = {
   INITIALIZE: 'INITIALIZE',
   SIGN_IN: 'SIGN_IN',
@@ -74,11 +76,11 @@ export const AuthProvider = (props) => {
 
     let isAuthenticated = false;
 
-    try {
+    /* try {
       isAuthenticated = window.sessionStorage.getItem('authenticated') === 'true';
     } catch (err) {
       console.error(err);
-    }
+    } */
 
     if (isAuthenticated) {
       const user = {
@@ -128,15 +130,38 @@ export const AuthProvider = (props) => {
   };
 
   const signIn = async (email, password) => {
-    if (email !== 'demo@adlinc.com' || password !== 'Password123!') {
+    {/*if (email !== 'demo@adlinc.com' || password !== 'Password123!') {
       throw new Error('Please check your email and password');
-    }
+    } */}
+    console.log(email,password)
+    /* axios
+      .post(
+        'https://adlinc-api.onrender.com/api/slaschapp/auth/login/user',
+        JSON.stringify({email,password})
+      )
+      .then(response => {
+        console.log(response)
+      })
+      .catch(error => {
+        console.log(error);
+      }); */
 
     try {
-      window.sessionStorage.setItem('authenticated', 'true');
+      ///axios
+      const response = await axios.post(url, { email:email, password:password }, {
+        Headers: {
+          'Content-Type': 'application/json'
+        }, //withCredentials: false
+      });
+
+      ///console.log(response);
+        window.sessionStorage.setItem('authenticated', 'true');
+      
+      
     } catch (err) {
       console.error(err);
-    }
+      
+    } 
 
     const user = {
       id: '5e86809283e28b96d2d38537',
