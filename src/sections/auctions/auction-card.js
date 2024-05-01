@@ -3,9 +3,12 @@ import ArrowDownOnSquareIcon from '@heroicons/react/24/solid/ArrowDownOnSquareIc
 import ClockIcon from '@heroicons/react/24/solid/ClockIcon';
 import { Avatar, Box, Card, CardContent, Divider, Stack, SvgIcon, Typography } from '@mui/material';
 
-export const CompanyCard = (props) => {
-  const { company } = props;
-
+export const AuctionCard = ({
+  BusinessName,
+  BusinessCategory,
+  BusinessLocation,
+  BusinessHours
+}) => {
   return (
     <Card
       sx={{
@@ -23,7 +26,7 @@ export const CompanyCard = (props) => {
           }}
         >
           <Avatar
-            src={company.logo}
+            src={BusinessHours}
             variant="square"
           />
         </Box>
@@ -32,13 +35,13 @@ export const CompanyCard = (props) => {
           gutterBottom
           variant="h5"
         >
-          {company.title}
+          {BusinessName}
         </Typography>
         <Typography
           align="center"
           variant="body1"
         >
-          {company.description}
+          {BusinessCategory}
         </Typography>
       </CardContent>
       <Box sx={{ flexGrow: 1 }} />
@@ -85,7 +88,7 @@ export const CompanyCard = (props) => {
             display="inline"
             variant="body2"
           >
-            {company.downloads} Downloads
+            {BusinessLocation} Downloads
           </Typography>
         </Stack>
       </Stack>
@@ -93,6 +96,9 @@ export const CompanyCard = (props) => {
   );
 };
 
-CompanyCard.propTypes = {
-  company: PropTypes.object.isRequired
+AuctionCard.propTypes = {
+  BusinessName: PropTypes.string.isRequired,
+  BusinessCategory: PropTypes.string.isRequired,
+  BusinessLocation: PropTypes.string.isRequired,
+  BusinessHours: PropTypes.string.isRequired
 };

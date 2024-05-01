@@ -11,8 +11,6 @@ import {
   FormHelperText,
   Link,
   Stack,
-  Tab,
-  Tabs,
   TextField,
   Typography
 } from '@mui/material';
@@ -25,8 +23,8 @@ const Page = () => {
   const [method, setMethod] = useState('email');
   const formik = useFormik({
     initialValues: {
-      email: '',
-      password: '',
+      email: 'saliba@gmail.com',
+      password: 'lizwi',
       submit: null
     },
     validationSchema: Yup.object({
@@ -52,21 +50,6 @@ const Page = () => {
       }
     }
   });
-
-  const handleMethodChange = useCallback(
-    (event, value) => {
-      setMethod(value);
-    },
-    []
-  );
-
-  const handleSkip = useCallback(
-    () => {
-      auth.skip();
-      router.push('/');
-    },
-    [auth, router]
-  );
 
   return (
     <>
@@ -117,28 +100,10 @@ const Page = () => {
                 </Link>
               </Typography>
             </Stack>
-            <Tabs
-              onChange={handleMethodChange}
-              sx={{ mb: 3 }}
-              value={method}
-              color="info"
-            >
-              <Tab
-                label="Email"
-                value="email"
-                color="info"
-                
-              />
-              <Tab
-                label="Phone Number"
-                value="phoneNumber"
-                color="info"
-              />
-            </Tabs>
+          
             {method === 'email' && (
               <form
-                //noValidate
-                //use our own Login funcyiom
+                
                 onSubmit={formik.handleSubmit}
               >
                 <Stack spacing={3}>
@@ -165,9 +130,7 @@ const Page = () => {
                     value={formik.values.password}
                   />
                 </Stack>
-                <FormHelperText sx={{ mt: 1 }}>
-                  Optionally you can skip.
-                </FormHelperText>
+                
                 {formik.errors.submit && (
                   <Typography
                     color="error"
@@ -187,39 +150,10 @@ const Page = () => {
                 >
                   Continue
                 </Button>
-                <Button
-                  fullWidth
-                  size="large"
-                  sx={{ mt: 3 }}
-                  onClick={handleSkip}
-                  color="info"
-                >
-                  Skip authentication
-                </Button>
-               {/* <Alert
-                  color="primary"
-                  severity="info"
-                  sx={{ mt: 3 }}
-                >
-                  <div>
-                    You can use <b>demo@devias.io</b> and password <b>Password123!</b>
-                </div>
-                </Alert>*/}
+                
               </form>
             )}
-            {/*{method === 'phoneNumber' && (
-              <div>
-                <Typography
-                  sx={{ mb: 1 }}
-                  variant="h6"
-                >
-                  Not available in the demo
-                </Typography>
-                <Typography color="text.secondary">
-                  To prevent unnecessary costs we disabled this feature in the demo.
-                </Typography>
-              </div>
-            )}*/}
+           
           </div>
         </Box>
       </Box>

@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { createContext, useContext, useEffect, useReducer, useRef, useState } from 'react';
 import { subDays, subHours } from 'date-fns';
 import { Box, Container, Unstable_Grid2 as Grid } from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
@@ -11,13 +12,20 @@ import { OverviewTotalCustomers } from 'src/sections/overview/overview-total-cus
 import { OverviewTotalProfit } from 'src/sections/overview/overview-total-profit';
 import { OverviewTraffic } from 'src/sections/overview/overview-traffic';
 
-const now = new Date();
 
+const now = new Date();
+//const myToken = localStorage.getItem('myToken');
+  /* if (typeof window !== 'undefined') {
+  // Perform localStorage action
+  const myToken = localStorage.getItem('myToken');
+} 
+  */
 const Page = () => (
+
   <>
     <Head>
       <title>
-        Adlinc Community 
+        Adlinc Community
       </title>
     </Head>
     <Box
@@ -27,7 +35,7 @@ const Page = () => (
         py: 3
       }}
     >
-      
+
       <Container maxWidth="xl">
         <Grid
           container
@@ -38,6 +46,9 @@ const Page = () => (
             sm={6}
             lg={3}
           >
+            
+            {/* <div>{localStorage.getItem('myToken')}</div> */}
+
             <OverviewBudget
               difference={12}
               positive
@@ -77,7 +88,7 @@ const Page = () => (
               value="$15k"
             />
           </Grid>
-         {/*  <Grid
+          {/*  <Grid
             xs={12}
             lg={8}
           >
@@ -106,7 +117,7 @@ const Page = () => (
               sx={{ height: '100%' }}
             />
           </Grid> */}
-          
+
           <Grid
             xs={12}
             md={12}

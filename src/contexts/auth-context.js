@@ -1,8 +1,9 @@
-import { createContext, useContext, useEffect, useReducer, useRef } from 'react';
+import { createContext, useContext, useEffect, useReducer, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-//import axios from 'src/api/axios';
 import axios from 'axios';
-const url='https://adlinc-api.onrender.com/api/slaschapp/auth/login/user'
+
+const url = 'https://adlinc-api.onrender.com/api/slaschapp/auth/login/owner';
+
 const HANDLERS = {
   INITIALIZE: 'INITIALIZE',
   SIGN_IN: 'SIGN_IN',
@@ -109,7 +110,30 @@ export const AuthProvider = (props) => {
     []
   );
 
-  const skip = () => {
+  const signIn = async (email, password) => {
+
+    const response = await axios.post(url, { email: email, password: password }, {
+      Headers: {
+        'Content-Type': 'application/json'
+      },
+      //withCredentials: false
+    });
+   
+   const accessToken = response.data.token.token;
+   localStorage.setItem('myToken', accessToken);
+   const userId = response.data.owner.id;
+   localStorage.setItem('userId', userId);
+   
+    
+    console.log(email, password);
+    console.log(accessToken);
+    console.log(userId);
+
+    if (response.status !== 200) {
+      throw new Error('There was an error logging in');
+    }
+
+
     try {
       window.sessionStorage.setItem('authenticated', 'true');
     } catch (err) {
@@ -119,55 +143,8 @@ export const AuthProvider = (props) => {
     const user = {
       id: '5e86809283e28b96d2d38537',
       avatar: '/assets/avatars/avatar-anika-visser.png',
-      name: 'Samkelo Zondi',
-      email: 'samkelo@adlinc.com'
-    };
-
-    dispatch({
-      type: HANDLERS.SIGN_IN,
-      payload: user
-    });
-  };
-
-  const signIn = async (email, password) => {
-    {/*if (email !== 'demo@adlinc.com' || password !== 'Password123!') {
-      throw new Error('Please check your email and password');
-    } */}
-    console.log(email,password)
-    /* axios
-      .post(
-        'https://adlinc-api.onrender.com/api/slaschapp/auth/login/user',
-        JSON.stringify({email,password})
-      )
-      .then(response => {
-        console.log(response)
-      })
-      .catch(error => {
-        console.log(error);
-      }); */
-
-    try {
-      ///axios
-      const response = await axios.post(url, { email:email, password:password }, {
-        Headers: {
-          'Content-Type': 'application/json'
-        }, //withCredentials: false
-      });
-
-      ///console.log(response);
-        window.sessionStorage.setItem('authenticated', 'true');
-      
-      
-    } catch (err) {
-      console.error(err);
-      
-    } 
-
-    const user = {
-      id: '5e86809283e28b96d2d38537',
-      avatar: '/assets/avatars/avatar-anika-visser.png',
-      name: 'Samkelo Zondi',
-      email: 'samkelo@adlinc.com'
+      name: response.data.owner.name,
+      email: 'samkelo@adlinc'
     };
 
     dispatch({
@@ -190,7 +167,6 @@ export const AuthProvider = (props) => {
     <AuthContext.Provider
       value={{
         ...state,
-        skip,
         signIn,
         signUp,
         signOut
