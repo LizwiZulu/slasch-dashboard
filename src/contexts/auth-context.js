@@ -153,9 +153,56 @@ export const AuthProvider = (props) => {
     });
   };
 
-  const signUp = async (email, name, password) => {
-    throw new Error('Sign up is not implemented');
+  const signUp = async (firstname, secondname, surname, profilePicture, phoneNumber, email, password, AcceptTermsAndConditions, locationOrAddress, birthday, IdNumber, IdDocumentLink, gender) => {
+    try {
+      const userData = {
+        firstname: firstname,
+        secondname: secondname,
+        surname: surname,
+        profilePicture: profilePicture,
+        phoneNumber: phoneNumber,
+        email: email,
+        password: password,
+        AcceptTermsAndConditions: AcceptTermsAndConditions,
+        locationOrAddress: locationOrAddress,
+        birthday: birthday,
+        IdNumber: IdNumber,
+        IdDocumentLink: IdDocumentLink,
+        gender: gender
+      };
+  
+      const response = await axios.post('https://adlinc-api.onrender.com/api/slaschapp/auth/register/owner', userData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+  
+      if (response.status !== 201) {
+        throw new Error('There was an error registering the user');
+      }
+
+      console.log(response.data.id);
+  
+      const user = {
+        id: response.data.id,
+        avatar: '/assets/avatars/avatar-anika-visser.png',
+        name: response.data.name,
+        email: response.data.email
+      };
+  
+      dispatch({
+        type: HANDLERS.SIGN_IN,
+        payload: user
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
+
+  /*  */
+  /* const signUp = async (email, name, password) => {
+    throw new Error('Sign up is not implemented');
+  }; */
 
   const signOut = () => {
     dispatch({
