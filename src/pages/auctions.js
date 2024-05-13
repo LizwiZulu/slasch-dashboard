@@ -12,15 +12,18 @@ import {
   Typography,
   Grid,
   CircularProgress,
+  Modal
 } from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 
+import { Auction } from 'src/sections/auctions/auction';
 import { AuctionCard } from 'src/sections/auctions/auction-card';
-
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
 
-const url = 'https://adlinc-api.onrender.com/api/slaschapp/business/'; //Change this endpoint to auctions
+const url = 'https://adlinc-api.onrender.com/api/slaschapp/business/';
 
 const Page = () => {
   const [auctions, setAuctions] = useState([]);
@@ -28,13 +31,15 @@ const Page = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [itemsPerPage, setItemsPerPage] = useState(6);
 
   useEffect(() => {
     const token = localStorage.getItem("myToken");
     const userId = localStorage.getItem("userId");
     if (token) {
       setIsLoading(true);
-      setError(null); // Clear any previous errors
+      setError(null);
       axios.get(`${url}${userId}/auction`, {
         headers: {
           'Content-Type': 'application/json',
@@ -42,9 +47,9 @@ const Page = () => {
         },
       })
         .then((response) => {
-          console.log("Fetched auctions:", response.data.auctionData); // replaces businesses with auctions
+          console.log("Fetched auctions:", response.data.auctionData);
           setAuctions(response.data.auctionData);
-          setTotalPages(Math.ceil(response.data.length / 10));
+          setTotalPages(Math.ceil(response.data.total / itemsPerPage));
         })
         .catch((error) => {
           setError(error);
@@ -53,39 +58,43 @@ const Page = () => {
           setIsLoading(false);
         });
     }
-  }, [page]);
+  }, [page, itemsPerPage]);
 
   const handlePageChange = (event, value) => {
     setPage(value);
   };
 
+  const handleAddButtonClicked = () => {
+    setShowModal(true);
+  };
+
   return (
     <>
       <Head>
-        <title>Auctions</title>
+        <title>Aunctions</title>
       </Head>
-      <Box component="main" sx={{ flexGrow: 1, py: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1, py: 3}}>
         <Container maxWidth="xl">
           <Stack spacing={3}>
             <Stack direction="row" justifyContent="space-between" spacing={4}>
               <Stack spacing={1}>
-                <Typography variant="h4">All Auctions</Typography>
-                <Stack alignItems="center" direction="row" spacing={1}>
+                <Typography variant="h4">My Auctions</Typography>
+                {/* <Stack alignItems="center" direction="row" spacing={1}>
                   <Button color="inherit" startIcon={<SvgIcon fontSize="small"><ArrowUpOnSquareIcon /></SvgIcon>}>
                     Import
                   </Button>
                   <Button color="inherit" startIcon={<SvgIcon fontSize="small"><ArrowDownOnSquareIcon /></SvgIcon>}>
                     Export
                   </Button>
-                </Stack>
+                </Stack> */}
               </Stack>
               <div>
-                <Button variant="contained" startIcon={<SvgIcon fontSize="small"><PlusIcon /></SvgIcon>}>
+                <Button variant="contained" startIcon={<SvgIcon fontSize="small"><PlusIcon /></SvgIcon>} onClick={handleAddButtonClicked}>
                   Add
                 </Button>
               </div>
             </Stack>
-           {/*  <CompaniesSearch /> */}
+            {/* <BusinessesSearch /> */}
             {isLoading && (
               <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <CircularProgress />
@@ -96,26 +105,29 @@ const Page = () => {
                 Error fetching auctions: {error.message}
               </Typography>
             )}
-            {auctions.length > 0 && ( // replaced companies with auctions
+            {auctions.length > 0 && (
               <>
                 <Grid container spacing={3}>
-                  {auctions.map((auction, index) => ( // replaces business with auction
+                  {auctions.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((auction, index) => (
                     <Grid xs={12} md={6} lg={4} key={auction._id}>
                       <AuctionCard
-                        AuctionName={auction.AuctionName}
-                        AuctionCategory={auction.AuctionCategory}
-                        AuctionLocation={auction.AuctionLocation}
-                        AuctionHours={auction.AuctionHours}
+                        campaignName={auction.campaignName}
+                        campaignDescription={auction.campaignDescription}
+                        campaignBudget={auction.campaignBudget}
+                        campaignDailyBudget={auction.campaignDailyBudget}
+                        _id={auction._id}
+
                       />
                     </Grid>
                   ))}
-                  {/* {companies.slice((page - 1) * 10, page * 10).map((company) => (
-                    <Grid xs={12} md={6} lg={4} key={company.id}>
-                      <CompanyCard 
-                      company={company} />
-                      
-                    </Grid>
-                  ))} */}
+                  {/* <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <Pagination
+                      count={totalPages}
+                      page={page}
+                      onChange={handlePageChange}
+                      size="small"
+                    />
+                  </Box> */}
                 </Grid>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                   <Pagination
@@ -130,6 +142,13 @@ const Page = () => {
           </Stack>
         </Container>
       </Box>
+      {showModal && (
+        <Dialog open={showModal} onClose={() => setShowModal(false)}>
+          <DialogContent>
+            <Auction />
+          </DialogContent>
+        </Dialog>
+      )}
     </>
   );
 };

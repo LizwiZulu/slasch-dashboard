@@ -1,20 +1,38 @@
 import PropTypes from 'prop-types';
 import ArrowDownOnSquareIcon from '@heroicons/react/24/solid/ArrowDownOnSquareIcon';
 import ClockIcon from '@heroicons/react/24/solid/ClockIcon';
-import { Avatar, Box, Card, CardContent, Divider, Stack, SvgIcon, Typography } from '@mui/material';
+import PencilIcon from '@heroicons/react/24/solid/PencilIcon';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
+import { Avatar, Box, Card, CardContent, Divider, Stack, SvgIcon, Typography, Button } from '@mui/material';
+
+// Import the Business component
+import { Auction } from './auction';
 
 export const AuctionCard = ({
-  BusinessName,
-  BusinessCategory,
-  BusinessLocation,
-  BusinessHours
+  campaignName,
+  campaignDescription,
+  campaignBudget,
+  campaignDailyBudget,
+_id
 }) => {
+  const [showModal, setShowModal] = useState(false);
+  const router = useRouter();
+  const handleEditButtonClicked = () => {
+    setShowModal(true);
+  };
+
   return (
     <Card
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        height: '100%'
+        height: '95%',
+        width: '95%',
+        pb:2
       }}
     >
       <CardContent>
@@ -25,23 +43,30 @@ export const AuctionCard = ({
             pb: 3
           }}
         >
-          <Avatar
+          <Typography
+          align="center"
+          gutterBottom
+          variant="h5"
+        >
+          {campaignName}
+        </Typography>
+         {/*  <Avatar
             src={BusinessHours}
             variant="square"
-          />
+          /> */}
         </Box>
         <Typography
           align="center"
           gutterBottom
           variant="h5"
         >
-          {BusinessName}
+          {campaignDescription}
         </Typography>
         <Typography
           align="center"
           variant="body1"
         >
-          {BusinessCategory}
+          {campaignBudget}
         </Typography>
       </CardContent>
       <Box sx={{ flexGrow: 1 }} />
@@ -69,7 +94,7 @@ export const AuctionCard = ({
             display="inline"
             variant="body2"
           >
-            Updated 2hr ago
+            {campaignDailyBudget} Daily budget
           </Typography>
         </Stack>
         <Stack
@@ -77,28 +102,28 @@ export const AuctionCard = ({
           direction="row"
           spacing={1}
         >
-          <SvgIcon
-            color="action"
-            fontSize="small"
-          >
-            <ArrowDownOnSquareIcon />
-          </SvgIcon>
-          <Typography
-            color="text.secondary"
-            display="inline"
-            variant="body2"
-          >
-            {BusinessLocation} Downloads
-          </Typography>
+          <div>
+            <Button variant="contained" startIcon={<SvgIcon fontSize="small"><PencilIcon /></SvgIcon>} onClick={handleEditButtonClicked} >
+              Edit Auction
+            </Button>
+          </div>
         </Stack>
       </Stack>
+      {showModal && (
+        <Dialog open={showModal} onClose={() => setShowModal(false)}>
+          <DialogContent>
+            <Auction _id={_id} />
+          </DialogContent>
+        </Dialog>
+      )}
     </Card>
   );
 };
 
 AuctionCard.propTypes = {
-  BusinessName: PropTypes.string.isRequired,
-  BusinessCategory: PropTypes.string.isRequired,
-  BusinessLocation: PropTypes.string.isRequired,
-  BusinessHours: PropTypes.string.isRequired
+  campaignName: PropTypes.string.isRequired,
+  campaignDescription: PropTypes.string.isRequired,
+  campaignBudget: PropTypes.string.isRequired,
+  campaignDailyBudget: PropTypes.string.isRequired,
+  _id: PropTypes.string.isRequired
 };

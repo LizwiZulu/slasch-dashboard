@@ -12,12 +12,16 @@ import {
   Typography,
   Grid,
   CircularProgress,
+  Modal
 } from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { BusinessCard } from 'src/sections/businesses/business-card';
+import { Business } from 'src/sections/businesses/business';
 import { BusinessesSearch } from 'src/sections/businesses/businesses-search';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
 
 const url = 'https://adlinc-api.onrender.com/api/slaschapp/business';
 
@@ -27,13 +31,15 @@ const Page = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [itemsPerPage, setItemsPerPage] = useState(6);
 
   useEffect(() => {
     const token = localStorage.getItem("myToken");
     if (token) {
       setIsLoading(true);
-      setError(null); // Clear any previous errors
-      axios.get(url, {
+      setError(null);
+      axios.get(`${url}?page=${page}&itemsPerPage=${itemsPerPage}`, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
@@ -42,7 +48,7 @@ const Page = () => {
         .then((response) => {
           console.log("Fetched companies:", response.data.businesses);
           setBusinesses(response.data.businesses);
-          setTotalPages(Math.ceil(response.data.length / 10));
+          setTotalPages(Math.ceil(response.data.total / itemsPerPage));
         })
         .catch((error) => {
           setError(error);
@@ -51,10 +57,14 @@ const Page = () => {
           setIsLoading(false);
         });
     }
-  }, [page]);
+  }, [page, itemsPerPage]);
 
   const handlePageChange = (event, value) => {
     setPage(value);
+  };
+
+  const handleAddButtonClicked = () => {
+    setShowModal(true);
   };
 
   return (
@@ -62,28 +72,28 @@ const Page = () => {
       <Head>
         <title>Businesses</title>
       </Head>
-      <Box component="main" sx={{ flexGrow: 1, py: 3 }}>
-        <Container maxWidth="xl">
-          <Stack spacing={3}>
-            <Stack direction="row" justifyContent="space-between" spacing={4}>
+      <Box component="main" sx={{ flexGrow: 1, py: 3}}>
+        <Container maxWidth="xl"> 
+          <Stack spacing={3}>  {/* spacing={3} */}
+            <Stack direction="row" justifyContent="space-between" spacing={4}>   {/* spacing={4} */}
               <Stack spacing={1}>
                 <Typography variant="h4">My Businesses</Typography>
-                <Stack alignItems="center" direction="row" spacing={1}>
+                {/* <Stack alignItems="center" direction="row" spacing={1}>
                   <Button color="inherit" startIcon={<SvgIcon fontSize="small"><ArrowUpOnSquareIcon /></SvgIcon>}>
                     Import
                   </Button>
                   <Button color="inherit" startIcon={<SvgIcon fontSize="small"><ArrowDownOnSquareIcon /></SvgIcon>}>
                     Export
                   </Button>
-                </Stack>
+                </Stack> */}
               </Stack>
               <div>
-                <Button variant="contained" startIcon={<SvgIcon fontSize="small"><PlusIcon /></SvgIcon>}>
+                <Button variant="contained" startIcon={<SvgIcon fontSize="small"><PlusIcon /></SvgIcon>} onClick={handleAddButtonClicked}>
                   Add
                 </Button>
               </div>
             </Stack>
-            <BusinessesSearch />
+            {/* <BusinessesSearch /> */}
             {isLoading && (
               <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <CircularProgress />
@@ -96,24 +106,26 @@ const Page = () => {
             )}
             {businesses.length > 0 && (
               <>
-                <Grid container spacing={3}>
-                  {businesses.map((business, index) => (
+                <Grid container spacing={3} >
+                  {businesses.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((business, index) => (
                     <Grid xs={12} md={6} lg={4} key={business._id}>
                       <BusinessCard
                         BusinessName={business.BusinessName}
                         BusinessCategory={business.BusinessCategory}
                         BusinessLocation={business.BusinessLocation}
                         BusinessHours={business.BusinessHours}
+                        _id={business._id}
                       />
                     </Grid>
                   ))}
-                  {/* {companies.slice((page - 1) * 10, page * 10).map((company) => (
-                    <Grid xs={12} md={6} lg={4} key={company.id}>
-                      <CompanyCard 
-                      company={company} />
-                      
-                    </Grid>
-                  ))} */}
+                  {/* <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <Pagination
+                      count={totalPages}
+                      page={page}
+                      onChange={handlePageChange}
+                      size="small"
+                    />
+                  </Box> */}
                 </Grid>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                   <Pagination
@@ -128,6 +140,13 @@ const Page = () => {
           </Stack>
         </Container>
       </Box>
+      {showModal && (
+        <Dialog open={showModal} onClose={() => setShowModal(false)}>
+          <DialogContent>
+            <Business />
+          </DialogContent>
+        </Dialog>
+      )}
     </>
   );
 };

@@ -21,7 +21,7 @@ export const items = [
       </SvgIcon>
     )
   },
-  {
+   {
     title: 'Orders',
     path: '/orders',
     icon: (
@@ -29,8 +29,8 @@ export const items = [
         <ShoppingCartIcon />
       </SvgIcon>
     )
-  },
-  {
+  }, 
+  /* {
     title: 'Customers',
     path: '/customers',
     icon: (
@@ -38,7 +38,7 @@ export const items = [
         <UsersIcon />
       </SvgIcon>
     )
-  },
+  }, */
   {
     title: 'Auctions',
     path: '/auctions',
@@ -48,7 +48,7 @@ export const items = [
       </SvgIcon>
     )
   },
-  {
+  /* {
     title: 'Products',
     path: '/products',
     icon: (
@@ -56,8 +56,8 @@ export const items = [
         <ArchiveBoxArrowDownIcon />
       </SvgIcon>
     )
-  },
-  {
+  }, */
+  /* {
     title: 'Analytics',
     path: '/analytics',
     icon: (
@@ -65,7 +65,16 @@ export const items = [
         <ChartPieIcon />
       </SvgIcon>
     )
-  },
+  }, */
+  /* {
+     title: 'Business', 
+    path: '/business',
+    icon: (
+      <SvgIcon fontSize="small">
+        <ShoppingBagIcon />
+      </SvgIcon>
+    ) 
+  },  */
   {
     title: 'Businesses',
     path: '/businesses',
