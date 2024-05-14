@@ -24,6 +24,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 
 const url = 'https://adlinc-api.onrender.com/api/slaschapp/business/';
+const aurl = 'https://adlinc-api.onrender.com/api/slaschapp/admin/auctions';
 
 const Page = () => {
   const [auctions, setAuctions] = useState([]);
@@ -37,7 +38,28 @@ const Page = () => {
   useEffect(() => {
     const token = localStorage.getItem("myToken");
     const userId = localStorage.getItem("userId");
-    if (token) {
+    const userEmail = localStorage.getItem("userEmail");
+    if (userEmail === "admin@adlinc.com") {
+      setIsLoading(true);
+      setError(null);
+      axios.get(aurl, {
+        headers: {
+          'Content-Type': 'application/json',
+          
+        },
+      })
+        .then((response) => {
+          console.log("Fetched auctions:", response.data.AuctionData);
+          setAuctions(response.data.AuctionData);
+          setTotalPages(Math.ceil(response.data.total / itemsPerPage));
+        })
+        .catch((error) => {
+          setError(error);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    } else {
       setIsLoading(true);
       setError(null);
       axios.get(`${url}${userId}/auction`, {
@@ -47,8 +69,8 @@ const Page = () => {
         },
       })
         .then((response) => {
-          console.log("Fetched auctions:", response.data.auctionData);
-          setAuctions(response.data.auctionData);
+          console.log("Fetched auctions:", response.data.AuctionData);
+          setAuctions(response.data.AuctionData);
           setTotalPages(Math.ceil(response.data.total / itemsPerPage));
         })
         .catch((error) => {
@@ -78,7 +100,7 @@ const Page = () => {
           <Stack spacing={3}>
             <Stack direction="row" justifyContent="space-between" spacing={4}>
               <Stack spacing={1}>
-                <Typography variant="h4">My Auctions</Typography>
+                <Typography variant="h4">{localStorage.getItem("userEmail") != "admin@adlinc.com"? "My" : "All"} Auctions</Typography>
                 {/* <Stack alignItems="center" direction="row" spacing={1}>
                   <Button color="inherit" startIcon={<SvgIcon fontSize="small"><ArrowUpOnSquareIcon /></SvgIcon>}>
                     Import
@@ -88,11 +110,14 @@ const Page = () => {
                   </Button>
                 </Stack> */}
               </Stack>
+
+              {localStorage.getItem("userEmail") != "admin@adlinc.com" && (
               <div>
                 <Button variant="contained" startIcon={<SvgIcon fontSize="small"><PlusIcon /></SvgIcon>} onClick={handleAddButtonClicked}>
                   Add
                 </Button>
               </div>
+              )}
             </Stack>
             {/* <BusinessesSearch /> */}
             {isLoading && (
@@ -120,14 +145,7 @@ const Page = () => {
                       />
                     </Grid>
                   ))}
-                  {/* <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <Pagination
-                      count={totalPages}
-                      page={page}
-                      onChange={handlePageChange}
-                      size="small"
-                    />
-                  </Box> */}
+                 
                 </Grid>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                   <Pagination

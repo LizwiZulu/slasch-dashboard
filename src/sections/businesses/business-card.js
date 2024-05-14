@@ -26,13 +26,13 @@ export const BusinessCard = ({
 
   return (
     <Card
-    
+
       sx={{
         display: 'flex',
         flexDirection: 'column',
         height: '95%',
         width: '95%',
-        pb:2
+        pb: 2
       }}
     >
       <CardContent>
@@ -95,11 +95,16 @@ export const BusinessCard = ({
           direction="row"
           spacing={1}
         >
-          <div>
-            <Button variant="contained" startIcon={<SvgIcon fontSize="small"><PencilIcon /></SvgIcon>} onClick={handleEditButtonClicked} >
-              Edit business
-            </Button>
-          </div>
+
+
+          {localStorage.getItem("userEmail") != "admin@adlinc.com" && (
+
+            <div>
+              <Button variant="contained" startIcon={<SvgIcon fontSize="small"><PencilIcon /></SvgIcon>} onClick={handleEditButtonClicked} >
+                Edit business
+              </Button>
+            </div>)}
+            
         </Stack>
       </Stack>
       {showModal && (

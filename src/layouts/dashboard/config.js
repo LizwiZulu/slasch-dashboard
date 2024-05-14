@@ -30,15 +30,15 @@ export const items = [
       </SvgIcon>
     )
   }, 
-  /* {
-    title: 'Customers',
-    path: '/customers',
+  {
+    title: 'Users',
+    path: '/users',
     icon: (
       <SvgIcon fontSize="small">
         <UsersIcon />
       </SvgIcon>
     )
-  }, */
+  },
   {
     title: 'Auctions',
     path: '/auctions',

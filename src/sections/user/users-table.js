@@ -15,9 +15,9 @@ import {
   Typography
 } from '@mui/material';
 import { Scrollbar } from 'src/components/scrollbar';
-import { getInitials } from 'src/utils/get-initials';
+//import { getInitials } from '../utils/get-initials';
 
-export const CustomersTable = (props) => {
+export const UsersTable = (props) => {
   const {
     count = 0,
     items = [],
@@ -28,12 +28,20 @@ export const CustomersTable = (props) => {
     onSelectAll,
     onSelectOne,
     page = 0,
-    rowsPerPage = 0,
+    rowsPerPage = 5,
     selected = []
   } = props;
 
   const selectedSome = (selected.length > 0) && (selected.length < items.length);
   const selectedAll = (items.length > 0) && (selected.length === items.length);
+
+  const handleChangePage = (event, newPage) => {
+    onPageChange(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    onRowsPerPageChange(event.target.value);
+  };
 
   return (
     <Card>
@@ -68,19 +76,19 @@ export const CustomersTable = (props) => {
                   Phone
                 </TableCell>
                 <TableCell>
-                  Signed Up
+                  Education
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map((customer) => {
-                const isSelected = selected.includes(customer.id);
-                const createdAt = format(customer.createdAt, 'dd/MM/yyyy');
+              {items.slice(page * rowsPerPage, (page + 1) * rowsPerPage).map((customer) => {
+                const isSelected = selected.includes(customer._id);
+                /* const createdAt = format(customer.createdAt, 'dd/MM/yyyy'); */
 
                 return (
                   <TableRow
                     hover
-                    key={customer.id}
+                    key={customer._id}
                     selected={isSelected}
                   >
                     <TableCell padding="checkbox">
@@ -88,9 +96,9 @@ export const CustomersTable = (props) => {
                         checked={isSelected}
                         onChange={(event) => {
                           if (event.target.checked) {
-                            onSelectOne?.(customer.id);
+                            onSelectOne?.(customer._id);
                           } else {
-                            onDeselectOne?.(customer.id);
+                            onDeselectOne?.(customer._id);
                           }
                         }}
                       />
@@ -101,11 +109,11 @@ export const CustomersTable = (props) => {
                         direction="row"
                         spacing={2}
                       >
-                        <Avatar src={customer.avatar}>
+                       {/*  <Avatar src={customer.avatar}>
                           {getInitials(customer.name)}
-                        </Avatar>
+                        </Avatar> */}
                         <Typography variant="subtitle2">
-                          {customer.name}
+                          {customer.firstname} {customer.surname}
                         </Typography>
                       </Stack>
                     </TableCell>
@@ -113,13 +121,13 @@ export const CustomersTable = (props) => {
                       {customer.email}
                     </TableCell>
                     <TableCell>
-                      {customer.address.city}, {customer.address.state}, {customer.address.country}
+                      {customer.locationOrAddress}
                     </TableCell>
                     <TableCell>
-                      {customer.phone}
+                      {customer.phoneNumber}
                     </TableCell>
                     <TableCell>
-                      {createdAt}
+                      {customer.educationStatus}
                     </TableCell>
                   </TableRow>
                 );
@@ -131,8 +139,8 @@ export const CustomersTable = (props) => {
       <TablePagination
         component="div"
         count={count}
-        onPageChange={onPageChange}
-        onRowsPerPageChange={onRowsPerPageChange}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
         page={page}
         rowsPerPage={rowsPerPage}
         rowsPerPageOptions={[5, 10, 25]}
@@ -141,7 +149,7 @@ export const CustomersTable = (props) => {
   );
 };
 
-CustomersTable.propTypes = {
+UsersTable.propTypes = {
   count: PropTypes.number,
   items: PropTypes.array,
   onDeselectAll: PropTypes.func,
@@ -154,3 +162,5 @@ CustomersTable.propTypes = {
   rowsPerPage: PropTypes.number,
   selected: PropTypes.array
 };
+
+export default UsersTable;

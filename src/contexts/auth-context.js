@@ -123,11 +123,15 @@ export const AuthProvider = (props) => {
    localStorage.setItem('myToken', accessToken);
    const userId = response.data.owner.id;
    localStorage.setItem('userId', userId);
+   const userEmail = response.data.owner.email;
+   localStorage.setItem('userEmail', userEmail);
    
     
     console.log(email, password);
     console.log(accessToken);
     console.log(userId);
+    console.log(userEmail);
+
 
     if (response.status !== 200) {
       throw new Error('There was an error logging in');

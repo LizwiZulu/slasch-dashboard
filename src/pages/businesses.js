@@ -24,6 +24,8 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 
 const url = 'https://adlinc-api.onrender.com/api/slaschapp/business';
+const aurl = 'https://adlinc-api.onrender.com/api/slaschapp/admin/businesses';
+
 
 const Page = () => {
   const [businesses, setBusinesses] = useState([]);
@@ -36,7 +38,30 @@ const Page = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("myToken");
-    if (token) {
+    const userEmail = localStorage.getItem("userEmail");
+    if (userEmail === "admin@adlinc.com") {
+      setIsLoading(true);
+      setError(null);
+      /* axios.get(`${url}/admin/businesses?page=${page}&itemsPerPage=${itemsPerPage}`, { */
+      axios.get(`${aurl}?page=${page}&itemsPerPage=${itemsPerPage}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          /* 'Authorization': `Bearer ${token}`, */
+        },
+      })
+        .then((response) => {
+          console.log("Fetched companies:", response.data.businesses);
+          setBusinesses(response.data.businesses);
+          setTotalPages(Math.ceil(response.data.total / itemsPerPage));
+        })
+        .catch((error) => {
+          setError(error);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    } else {
+
       setIsLoading(true);
       setError(null);
       axios.get(`${url}?page=${page}&itemsPerPage=${itemsPerPage}`, {
@@ -46,7 +71,7 @@ const Page = () => {
         },
       })
         .then((response) => {
-          console.log("Fetched companies:", response.data.businesses);
+          console.log("Fetched companies:", response.data.businesses); //replace businesses with BusinessData
           setBusinesses(response.data.businesses);
           setTotalPages(Math.ceil(response.data.total / itemsPerPage));
         })
@@ -72,12 +97,13 @@ const Page = () => {
       <Head>
         <title>Businesses</title>
       </Head>
-      <Box component="main" sx={{ flexGrow: 1, py: 3}}>
-        <Container maxWidth="xl"> 
+      <Box component="main" sx={{ flexGrow: 1, py: 3 }}>
+        <Container maxWidth="xl">
           <Stack spacing={3}>  {/* spacing={3} */}
             <Stack direction="row" justifyContent="space-between" spacing={4}>   {/* spacing={4} */}
               <Stack spacing={1}>
-                <Typography variant="h4">My Businesses</Typography>
+                <Typography variant="h4">{localStorage.getItem("userEmail") != "admin@adlinc.com"? "My" : "All"} Businesses</Typography>
+                
                 {/* <Stack alignItems="center" direction="row" spacing={1}>
                   <Button color="inherit" startIcon={<SvgIcon fontSize="small"><ArrowUpOnSquareIcon /></SvgIcon>}>
                     Import
@@ -87,11 +113,15 @@ const Page = () => {
                   </Button>
                 </Stack> */}
               </Stack>
+
+              {localStorage.getItem("userEmail") != "admin@adlinc.com" && (
               <div>
                 <Button variant="contained" startIcon={<SvgIcon fontSize="small"><PlusIcon /></SvgIcon>} onClick={handleAddButtonClicked}>
                   Add
                 </Button>
               </div>
+              )}
+
             </Stack>
             {/* <BusinessesSearch /> */}
             {isLoading && (
@@ -104,7 +134,7 @@ const Page = () => {
                 Error fetching businesses: {error.message}
               </Typography>
             )}
-            {businesses.length > 0 && (
+            {businesses.length >= 0 && (
               <>
                 <Grid container spacing={3} >
                   {businesses.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((business, index) => (

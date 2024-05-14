@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import ArrowDownOnSquareIcon from '@heroicons/react/24/solid/ArrowDownOnSquareIcon';
-import ClockIcon from '@heroicons/react/24/solid/ClockIcon';
+import CreditCardIcon from '@heroicons/react/24/solid/CreditCardIcon';
 import PencilIcon from '@heroicons/react/24/solid/PencilIcon';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -17,7 +17,7 @@ export const AuctionCard = ({
   campaignDescription,
   campaignBudget,
   campaignDailyBudget,
-_id
+  _id
 }) => {
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
@@ -32,7 +32,7 @@ _id
         flexDirection: 'column',
         height: '95%',
         width: '95%',
-        pb:2
+        pb: 2
       }}
     >
       <CardContent>
@@ -44,13 +44,13 @@ _id
           }}
         >
           <Typography
-          align="center"
-          gutterBottom
-          variant="h5"
-        >
-          {campaignName}
-        </Typography>
-         {/*  <Avatar
+            align="center"
+            gutterBottom
+            variant="h4"
+          >
+            {campaignName}
+          </Typography>
+          {/*  <Avatar
             src={BusinessHours}
             variant="square"
           /> */}
@@ -58,7 +58,7 @@ _id
         <Typography
           align="center"
           gutterBottom
-          variant="h5"
+          variant="h6"
         >
           {campaignDescription}
         </Typography>
@@ -66,7 +66,7 @@ _id
           align="center"
           variant="body1"
         >
-          {campaignBudget}
+          Auction lifetime budget: {campaignBudget}
         </Typography>
       </CardContent>
       <Box sx={{ flexGrow: 1 }} />
@@ -84,17 +84,19 @@ _id
           spacing={1}
         >
           <SvgIcon
-            color="action"
+            color="info"
             fontSize="small"
           >
-            <ClockIcon />
+            <CreditCardIcon />
           </SvgIcon>
           <Typography
             color="text.secondary"
             display="inline"
             variant="body2"
           >
-            {campaignDailyBudget} Daily budget
+            Daily budget: <Typography color="text.primary"
+              display="inline"
+              variant="body2"> {campaignDailyBudget}  </Typography>
           </Typography>
         </Stack>
         <Stack
@@ -102,11 +104,13 @@ _id
           direction="row"
           spacing={1}
         >
-          <div>
-            <Button variant="contained" startIcon={<SvgIcon fontSize="small"><PencilIcon /></SvgIcon>} onClick={handleEditButtonClicked} >
-              Edit Auction
-            </Button>
-          </div>
+          {localStorage.getItem("userEmail") != "admin@adlinc.com" && (
+            <div>
+              <Button variant="contained" startIcon={<SvgIcon fontSize="small"><PencilIcon /></SvgIcon>} onClick={handleEditButtonClicked} >
+                Edit Auction
+              </Button>
+            </div>
+          )}
         </Stack>
       </Stack>
       {showModal && (
