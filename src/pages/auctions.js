@@ -15,7 +15,6 @@ import {
   Modal
 } from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
-
 import { Auction } from 'src/sections/auctions/auction';
 import { AuctionCard } from 'src/sections/auctions/auction-card';
 import axios from 'axios';
@@ -49,8 +48,8 @@ const Page = () => {
         },
       })
         .then((response) => {
-          console.log("Fetched auctions:", response.data.AuctionData);
-          setAuctions(response.data.AuctionData);
+          console.log("Fetched auctions:", response.data.auctionData);
+          setAuctions(response.data.auctionData);
           setTotalPages(Math.ceil(response.data.total / itemsPerPage));
         })
         .catch((error) => {
@@ -69,8 +68,8 @@ const Page = () => {
         },
       })
         .then((response) => {
-          console.log("Fetched auctions:", response.data.AuctionData);
-          setAuctions(response.data.AuctionData);
+          console.log("Fetched auctions:", response.data.auctionData);
+          setAuctions(response.data.auctionData);
           setTotalPages(Math.ceil(response.data.total / itemsPerPage));
         })
         .catch((error) => {
