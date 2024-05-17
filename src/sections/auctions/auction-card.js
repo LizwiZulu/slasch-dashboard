@@ -74,7 +74,7 @@ export const AuctionCard = ({
       <Stack
         alignItems="center"
         direction="row"
-        justifyContent="space-between"
+        justifyContent="center"
         spacing={2}
         sx={{ p: 2 }}
       >

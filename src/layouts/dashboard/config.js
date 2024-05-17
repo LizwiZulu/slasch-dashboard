@@ -5,6 +5,7 @@ import ArchiveBoxArrowDownIcon from '@heroicons/react/24/solid/ArchiveBoxArrowDo
 import ChartPieIcon from '@heroicons/react/24/solid/ChartPieIcon';
 import ShoppingCartIcon from '@heroicons/react/24/solid/ShoppingCartIcon';
 import ShoppingBagIcon from '@heroicons/react/24/solid/ShoppingBagIcon';
+import FlagIcon from '@heroicons/react/24/solid/FlagIcon';
 import UserIcon from '@heroicons/react/24/solid/UserIcon';
 import UserPlusIcon from '@heroicons/react/24/solid/UserPlusIcon';
 import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
@@ -40,23 +41,24 @@ export const items = [
     )
   },
   {
-    title: 'Auctions',
-    path: '/auctions',
+    title: 'Bait Plants',
+    path: '/baitplants',
     icon: (
       <SvgIcon fontSize="small">
         <ArchiveBoxArrowDownIcon />
       </SvgIcon>
     )
   },
-  /* {
-    title: 'Products',
-    path: '/products',
+  {
+    title: 'Auctions',
+    path: '/auctions',
     icon: (
       <SvgIcon fontSize="small">
-        <ArchiveBoxArrowDownIcon />
+        <FlagIcon />
       </SvgIcon>
     )
-  }, */
+  },
+ 
   /* {
     title: 'Analytics',
     path: '/analytics',

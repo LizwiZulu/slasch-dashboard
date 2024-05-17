@@ -3,7 +3,7 @@ import { Button, Box, Card, CardContent, Divider, Stack, SvgIcon, Typography } f
 import Image from 'next/image';
 import PencilIcon from '@heroicons/react/24/solid/PencilIcon';
 
-export const ProductCard = (props) => {
+export const BaitplantCard = (props) => {
     const { product } = props;
 
     return (
@@ -24,7 +24,7 @@ export const ProductCard = (props) => {
                 >
                     <div style={{borderRadius: '5px', overflow: 'hidden'}}>
                     <Image
-                        src={product.image}
+                        src={product.photos[0]}
                         alt='Product image 1'
                         style={{
                             objectFit: 'cover',
@@ -42,13 +42,13 @@ export const ProductCard = (props) => {
                     gutterBottom
                     variant="h5"
                 >
-                    {product.title}
+                    {product.name}
                 </Typography>
                 <Typography
                     align="left"
                     variant="body1"
                 >
-                    {product.description}
+                    {product.baitPlantDescription}
                 </Typography>
             </CardContent>
 
@@ -128,6 +128,6 @@ export const ProductCard = (props) => {
     );
 };
 
-ProductCard.propTypes = {
+BaitplantCard.propTypes = {
     company: PropTypes.object.isRequired
 };

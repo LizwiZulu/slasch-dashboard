@@ -109,9 +109,9 @@ export const UsersTable = (props) => {
                         direction="row"
                         spacing={2}
                       >
-                       {/*  <Avatar src={customer.avatar}>
-                          {getInitials(customer.name)}
-                        </Avatar> */}
+                         <Avatar src={customer.profilePicture}>
+                         {/* {getInitials(customer.name)}*/}
+                        </Avatar> 
                         <Typography variant="subtitle2">
                           {customer.firstname} {customer.surname}
                         </Typography>

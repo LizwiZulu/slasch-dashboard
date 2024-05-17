@@ -46,6 +46,7 @@ export const BusinessCard = ({
           <Avatar
             src={BusinessHours}
             variant="square"
+            sx={{ width: 75, height: 75 }}
           />
         </Box>
         <Typography
