@@ -49,7 +49,7 @@ const Page = () => {
       })
         .then((response) => {
           console.log("Fetched auctions:", response.data.auctionData);
-          setAuctions(response.data.auctionData);
+          setAuctions(response.data.auction);
           setTotalPages(Math.ceil(response.data.total / itemsPerPage));
         })
         .catch((error) => {

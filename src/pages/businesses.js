@@ -50,7 +50,7 @@ const Page = () => {
         },
       })
         .then((response) => {
-          console.log("Fetched companies:", response.data.businesses);
+         // console.log("Fetched companies:", response.data.businesses);
           setBusinesses(response.data.businesses);
           setTotalPages(Math.ceil(response.data.total / itemsPerPage));
         })
@@ -71,7 +71,7 @@ const Page = () => {
         },
       })
         .then((response) => {
-          console.log("Fetched companies:", response.data.businesses); //replace businesses with BusinessData
+         // console.log("Fetched companies:", response.data.businesses); //replace businesses with BusinessData
           setBusinesses(response.data.businesses);
           setTotalPages(Math.ceil(response.data.total / itemsPerPage));
         })

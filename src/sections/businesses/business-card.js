@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import ArrowDownOnSquareIcon from '@heroicons/react/24/solid/ArrowDownOnSquareIcon';
-import ClockIcon from '@heroicons/react/24/solid/ClockIcon';
+import EyeIcon from '@heroicons/react/24/solid/EyeIcon';
 import PencilIcon from '@heroicons/react/24/solid/PencilIcon';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -20,9 +20,17 @@ export const BusinessCard = ({
 }) => {
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
+
   const handleEditButtonClicked = () => {
     setShowModal(true);
   };
+
+  const handleViewButtonClicked = () => {
+    router.push(`/businessdetails/${_id}`);
+  };
+  /* const handleViewButtonClicked = () => {
+    //navigate to a new page with the business information and list all auctions under tha business. Create a new page called businessDeatils. 
+  }; */
 
   return (
     <Card
@@ -70,43 +78,27 @@ export const BusinessCard = ({
         direction="row"
         justifyContent="space-between"
         spacing={2}
-        sx={{ p: 2 }}
+        sx={{ p: 1 }}
+
       >
-        <Stack
-          alignItems="center"
-          direction="row"
-          spacing={1}
-        >
-          <SvgIcon
-            color="action"
-            fontSize="small"
+
+        {localStorage.getItem("userEmail") != "admin@adlinc.com" && (
+
+          <Stack
+
           >
-            <ClockIcon />
-          </SvgIcon>
-          <Typography
-            color="text.secondary"
-            display="inline"
-            variant="body2"
-          >
-            Updated 2hr ago
-          </Typography>
-        </Stack>
-        <Stack
-          alignItems="center"
-          direction="row"
-          spacing={1}
-        >
+            <Button variant="contained" startIcon={<SvgIcon fontSize="small"><PencilIcon /></SvgIcon>} onClick={handleEditButtonClicked}>
+              Edit business
+            </Button>
 
 
-          {localStorage.getItem("userEmail") != "admin@adlinc.com" && (
+          </Stack>
+        )}
 
-            <div>
-              <Button variant="contained" startIcon={<SvgIcon fontSize="small"><PencilIcon /></SvgIcon>} onClick={handleEditButtonClicked} >
-                Edit business
-              </Button>
-            </div>)}
-            
-        </Stack>
+        <Button variant="contained" startIcon={<SvgIcon fontSize="small"><EyeIcon /></SvgIcon>} onClick={handleViewButtonClicked}>
+          View business
+        </Button>
+        
       </Stack>
       {showModal && (
         <Dialog open={showModal} onClose={() => setShowModal(false)}>

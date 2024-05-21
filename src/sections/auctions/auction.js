@@ -36,27 +36,7 @@ export const Auction = ({ _id }) => {
     fetchAuction();
   }, [_id]);
 
-  /* useEffect (() => {
-    if (!business._id ) return;
-
-    const fetchBusiness = async () => {
-      const resposnse = await axios.get(`${url}/${business._id}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        console.log("Fetched business:", response.data.business);
-        setBusiness(response.data.business);
-        
-      })
-      .catch((error) => {
-        setError(error);
-      })
-    };
-    fetchBusiness();
-  }, []); */
+ 
 
   const handleSubmit = (event) => {
     event.preventDefault();
