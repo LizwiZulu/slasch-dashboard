@@ -68,7 +68,7 @@ const Page = () => {
         },
       })
         .then((response) => {
-          console.log("Fetched auctions:", response.data.auctionData);
+        // console.log("Fetched auctions:", response);
           setAuctions(response.data.auctionData);
           setTotalPages(Math.ceil(response.data.total / itemsPerPage));
         })

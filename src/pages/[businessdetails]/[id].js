@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { Box, Container, Stack, Typography, Grid, CircularProgress, Avatar } from '@mui/material';
+import { Box, Container, Stack, Typography, Grid, CircularProgress, Avatar, Card } from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -67,27 +67,9 @@ const Page = () => {
       </Head>
       <Box component="main" sx={{ flexGrow: 1, py: 3 }}>
         <Container maxWidth="xl">
-          <Stack spacing={3}>
-            <Stack direction="row" justifyContent="space-between" spacing={4}>
-              <Grid xs={12} md={6} lg={4}>
-                <Avatar
-                  src={business?.BusinessHours}
-                  variant="square"
-                  sx={{ width: 150, height: 150 }}
-                />
-              </Grid>
+          <Stack spacing={2}>
 
-              <Grid xs={12} md={6} lg={8}>
-                <Stack direction="column" justifyContent="space-between" spacing={4}>
-                  <Typography variant="h6">Business Name: {business?.BusinessName}</Typography>
-                  <Typography variant="h6">Business Category: {business?.BusinessCategory}</Typography>
-                  <Typography variant="h6">Location: {business?.BusinessLocation}</Typography>
-                  <Typography variant="h6">Phone number: {business?.PhoneNumber}</Typography>
-                </Stack>
-              </Grid>
-            </Stack>
-
-            {isLoading && (
+          {isLoading && (
               <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <CircularProgress />
               </Box>
@@ -98,6 +80,45 @@ const Page = () => {
                 Error fetching business: {error.message}
               </Typography>
             )}
+            
+            <Card
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100%',
+                width: '100%',
+                p: 2
+              }}
+            >
+              <Stack direction="row" alignItems="flex-start" spacing={4}>
+                <Grid xs={12} md={6} lg={6}>
+                  <Avatar
+                    src={business?.BusinessHours}
+                    variant="rounded"
+                    sx={{ width: 250, height: 250 }}
+                  />
+                </Grid>
+
+                <Grid xs={12} md={6} lg={6}>
+                  <Stack direction="column" justifyContent="space-between" alignItems="flex-start" spacing={1}>
+
+                    <Typography color="text.secondary" variant="body2">Business Name</Typography>
+                    <Typography variant="h6">{business?.BusinessName}</Typography>
+                    <Typography color="text.secondary" variant="body2">Business Category</Typography>
+                    <Typography variant="h6">{business?.BusinessCategory}</Typography>
+                    <Typography color="text.secondary" variant="body2">Location</Typography>
+                    <Typography variant="h6">{business?.BusinessLocation}</Typography>
+                    <Typography color="text.secondary" variant="body2">Phone number</Typography>
+                    <Typography variant="h6">{business?.PhoneNumber}</Typography>
+
+                  </Stack>
+                </Grid>
+              </Stack>
+            </Card>
+
+            
+
+            <Typography variant="h5">All business Auctions</Typography>
 
             {auctions.length > 0 && (
               <>

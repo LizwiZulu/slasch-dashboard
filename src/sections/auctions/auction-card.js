@@ -6,6 +6,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import EyeIcon from '@heroicons/react/24/solid/EyeIcon';
 
 import { Avatar, Box, Card, CardContent, Divider, Stack, SvgIcon, Typography, Button } from '@mui/material';
 
@@ -21,8 +22,13 @@ export const AuctionCard = ({
 }) => {
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
+
   const handleEditButtonClicked = () => {
     setShowModal(true);
+  };
+
+  const handleViewButtonClicked = () => {
+    router.push(`/auctiondetails/${_id}`);
   };
 
   return (
@@ -107,10 +113,15 @@ export const AuctionCard = ({
           {localStorage.getItem("userEmail") != "admin@adlinc.com" && (
             <div>
               <Button variant="contained" startIcon={<SvgIcon fontSize="small"><PencilIcon /></SvgIcon>} onClick={handleEditButtonClicked} >
-                Edit Auction
+                Edit
               </Button>
             </div>
           )}
+
+          <Button variant="contained" startIcon={<SvgIcon fontSize="small"><EyeIcon /></SvgIcon>} onClick={handleViewButtonClicked}>
+            View
+          </Button>
+
         </Stack>
       </Stack>
       {showModal && (
