@@ -125,12 +125,18 @@ export const AuthProvider = (props) => {
    localStorage.setItem('userId', userId);
    const userEmail = response.data.owner.email;
    localStorage.setItem('userEmail', userEmail);
+   const name = response.data.owner.name;
+   localStorage.setItem('name', name);
+   const surname = response.data.owner.surname;
+   localStorage.setItem('surname', surname);
    
     
     console.log(email, password);
     console.log(accessToken);
     console.log(userId);
     console.log(userEmail);
+    console.log(response.data);
+    
 
 
     if (response.status !== 200) {

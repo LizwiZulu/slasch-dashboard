@@ -42,7 +42,8 @@ export const AccountPopover = (props) => {
           color="text.secondary"
           variant="body2"
         >
-          Samkelo Zondi
+          {localStorage.getItem("name")} {localStorage.getItem("surname")}
+    
         </Typography>
       </Box>
       <Divider />
