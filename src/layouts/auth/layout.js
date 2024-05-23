@@ -52,7 +52,7 @@ export const Layout = (props) => {
              
               <img
               alt="Adlinc Community Logo"
-              src="/assets/adlinc-logo.svg"
+              src="/assets/adlinc-logo.png"
             />
             </Box>
           </Box>
