@@ -14,12 +14,7 @@ import { OverviewTraffic } from 'src/sections/overview/overview-traffic';
 
 
 const now = new Date();
-//const myToken = localStorage.getItem('myToken');
-  /* if (typeof window !== 'undefined') {
-  // Perform localStorage action
-  const myToken = localStorage.getItem('myToken');
-} 
-  */
+
 const Page = () => (
 
   <>
@@ -47,7 +42,7 @@ const Page = () => (
             lg={3}
           >
             
-            {/* <div>{localStorage.getItem('myToken')}</div> */}
+          
 
             <OverviewBudget
               difference={12}

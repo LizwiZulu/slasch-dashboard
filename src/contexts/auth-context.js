@@ -77,11 +77,11 @@ export const AuthProvider = (props) => {
 
     let isAuthenticated = false;
 
-    /* try {
+    try {
       isAuthenticated = window.sessionStorage.getItem('authenticated') === 'true';
     } catch (err) {
       console.error(err);
-    } */
+    }
 
     if (isAuthenticated) {
       const user = {
