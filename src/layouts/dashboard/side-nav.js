@@ -54,7 +54,7 @@ export const SideNav = (props) => {
           >
             <img
               alt="Adlinc Community Logo"
-              src="/assets/adlinc-logo.png"
+              src="https://trisoft.co.za/wp-content/uploads/2024/05/Adlinc-logo.png"
             />
 
           </Box>
