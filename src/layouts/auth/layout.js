@@ -49,7 +49,7 @@ export const Layout = (props) => {
                 width: 32
               }}
             >
-              <Logo />
+             
               <img
               alt="Adlinc Community Logo"
               src="/assets/adlinc-logo.svg"
