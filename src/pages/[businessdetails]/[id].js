@@ -1,5 +1,11 @@
 import Head from 'next/head';
-import { Box, Container, Stack, Typography, Grid, CircularProgress, Avatar, Card } from '@mui/material';
+import {
+  Box, Container, Stack, Typography, Grid, CircularProgress, Avatar, Card, Table,
+  TableBody,
+  TableCell,
+  TableContainer, TableHead,
+  TableRow
+} from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -50,6 +56,7 @@ const Page = () => {
       })
       .catch((error) => {
         setError(error);
+        console.log(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -69,7 +76,7 @@ const Page = () => {
         <Container maxWidth="xl">
           <Stack spacing={2}>
 
-          {isLoading && (
+            {isLoading && (
               <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <CircularProgress />
               </Box>
@@ -80,43 +87,67 @@ const Page = () => {
                 Error fetching business: {error.message}
               </Typography>
             )}
-            
+
             <Card
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
                 height: '100%',
                 width: '100%',
-                p: 2
+                p: 2,
               }}
             >
-              <Stack direction="row" alignItems="flex-start" spacing={4}>
-                <Grid xs={12} md={6} lg={6}>
+              <Grid container alignItems="center">
+                
+                <Grid xs={12} md={6} lg={4}>
                   <Avatar
                     src={business?.BusinessHours}
                     variant="rounded"
-                    sx={{ width: 250, height: 250 }}
+                    sx={{ width: 275, height: 275 }}
                   />
                 </Grid>
 
-                <Grid xs={12} md={6} lg={6}>
-                  <Stack direction="column" justifyContent="space-between" alignItems="flex-start" spacing={1}>
+                <Grid xs={12} md={6} lg={8}>
+                  <Stack direction="column" justifyContent="space-between" alignItems="flex-start" spacing={2}>
+                    <TableContainer>
+                      <Table>
+                        <TableBody>
+                          <TableRow>
+                            <TableCell>  <Typography color="text.secondary" variant="body2">
+                              Business Name
+                            </Typography></TableCell>
+                            <TableCell>{business?.BusinessName}</TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell> <Typography color="text.secondary" variant="body2">
+                              Business Category
+                            </Typography></TableCell>
+                            <TableCell>{business?.BusinessCategory}</TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell><Typography color="text.secondary" variant="body2">
+                              Business Location
+                            </Typography></TableCell>
+                            <TableCell>{business?.BusinessLocation}</TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell><Typography color="text.secondary" variant="body2">
+                              Phone Number
+                            </Typography></TableCell>
+                            <TableCell>{business?.PhoneNumber}</TableCell>
+                          </TableRow>
 
-                    <Typography color="text.secondary" variant="body2">Business Name</Typography>
-                    <Typography variant="h6">{business?.BusinessName}</Typography>
-                    <Typography color="text.secondary" variant="body2">Business Category</Typography>
-                    <Typography variant="h6">{business?.BusinessCategory}</Typography>
-                    <Typography color="text.secondary" variant="body2">Location</Typography>
-                    <Typography variant="h6">{business?.BusinessLocation}</Typography>
-                    <Typography color="text.secondary" variant="body2">Phone number</Typography>
-                    <Typography variant="h6">{business?.PhoneNumber}</Typography>
-
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                    
                   </Stack>
                 </Grid>
-              </Stack>
+                
+              </Grid>
             </Card>
 
-            
+
 
             <Typography variant="h5">All business Auctions</Typography>
 

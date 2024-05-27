@@ -42,11 +42,11 @@ const Page = () => {
     if (userEmail === "admin@adlinc.com") {
       setIsLoading(true);
       setError(null);
-      /* axios.get(`${url}/admin/businesses?page=${page}&itemsPerPage=${itemsPerPage}`, { */
+
       axios.get(`${aurl}?page=${page}&itemsPerPage=${itemsPerPage}`, {
         headers: {
           'Content-Type': 'application/json',
-          /* 'Authorization': `Bearer ${token}`, */
+          'Authorization': `Bearer ${token}`, 
         },
       })
         .then((response) => {

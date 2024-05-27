@@ -9,6 +9,11 @@ import {
   Avatar,
   Card,
   Pagination,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer, TableHead,
+  TableRow
 } from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import axios from 'axios';
@@ -58,7 +63,7 @@ const Page = () => {
         setTotalPages(Math.ceil(response[1].data.total / itemsPerPage));
 
         console.log("Fetched auction:", auction);
-        console.log(baits);
+        console.log(baits);
       })
       .catch((error) => {
         setError(error);
@@ -80,6 +85,7 @@ const Page = () => {
       <Box component="main" sx={{ flexGrow: 1, py: 3 }}>
         <Container maxWidth="xl">
           <Stack spacing={2}>
+
             {isLoading && (
               <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <CircularProgress />
@@ -92,6 +98,8 @@ const Page = () => {
               </Typography>
             )}
 
+            <Typography variant="h5">Auction Details</Typography>
+
             {auction && ( // Conditionally render auction details only if fetched
               <Card
                 sx={{
@@ -99,46 +107,55 @@ const Page = () => {
                   flexDirection: 'column',
                   height: '100%',
                   width: '100%',
-                  p: 2,
+                  p: 3,
                 }}
               >
-                <Stack direction="row" alignItems="flex-start" spacing={4}>
-                  <Grid xs={12} md={6} lg={6}>
-                    <Stack direction="column" justifyContent="space-between" alignItems="flex-start" spacing={1}>
-                      <Typography color="text.secondary" variant="body2">
-                        Auction Name
-                      </Typography>
-                      <Typography variant="h6">{auction.campaignName}</Typography>
-                      <Typography color="text.secondary" variant="body2">
-                        Description 
-                      </Typography>
-                      <Typography variant="h6">{auction.campaignDescription}</Typography>
-                      <Typography color="text.secondary" variant="body2">
-                        Lifetime budget 
-                      </Typography>
-                      <Typography variant="h6">{auction.campaignBudget}</Typography>
-                      <Typography color="text.secondary" variant="body2">
-                        Daily Budget
-                      </Typography>
-                      <Typography variant="h6">{auction.campaignDailyBudget}</Typography>
-                      
-                    </Stack>
-                  </Grid>
-                  {/* Add other auction details here (e.g., description, budget) */}
-                </Stack>
+
+                <TableContainer>
+                  <Table>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell>  <Typography color="text.secondary" variant="body2">
+                          Auction Name
+                        </Typography></TableCell>
+                        <TableCell>{auction.campaignName}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell> <Typography color="text.secondary" variant="body2">
+                          Description
+                        </Typography></TableCell>
+                        <TableCell>{auction.campaignDescription}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell><Typography color="text.secondary" variant="body2">
+                          Lifetime Budget
+                        </Typography></TableCell>
+                        <TableCell>{auction.campaignBudget}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell><Typography color="text.secondary" variant="body2">
+                          Daily Budget
+                        </Typography></TableCell>
+                        <TableCell>{auction.campaignDailyBudget}</TableCell>
+                      </TableRow>
+
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+
               </Card>
             )}
 
             <Typography variant="h5">All Auction Bait Plants</Typography>
             {baits && (
-            <Grid container spacing={3}>
-              {baits.map((product) => (
-                <Grid xs={12} md={6} lg={4} key={product.id}>
-                  
-                  <BaitplantCard product={product} />
-                </Grid>
-              ))}
-            </Grid>
+              <Grid container spacing={3}>
+                {baits.map((product) => (
+                  <Grid xs={12} md={6} lg={4} key={product.id}>
+
+                    <BaitplantCard product={product} />
+                  </Grid>
+                ))}
+              </Grid>
             )}
 
             {/* Pagination (if totalPages is greater than 1) */}

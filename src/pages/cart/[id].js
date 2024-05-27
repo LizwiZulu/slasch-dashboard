@@ -22,63 +22,62 @@ import {
 } from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 
-
+const url = 'https://adlinc-api.onrender.com/api/slaschapp';
 const Page = () => {
 
-  const [cart, setCart] = useState({
-    id: '1',
-    status: 'pending',
-    items: [
-      {
-        id: '1',
-        name: 'Item 1',
-        quantity: 2,
-        price: 10.99,
-      },
-      {
-        id: '2',
-        name: 'Item 2',
-        quantity: 3,
-        price: 9.99,
-      },
-      {
-        id: '3',
-        name: 'Item 3',
-        quantity: 1,
-        price: 12.99,
-      },
-      {
-        id: '4',
-        name: 'Item 4',
-        quantity: 2,
-        price: 8.99,
-      },
-      {
-        id: '5',
-        name: 'Item 5',
-        quantity: 3,
-        price: 15.99,
-      },
-    ],
-  });
-  const [status, setStatus] = useState(cart.status);
-  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const cartId = router.query.id; // Get the order ID from the URL
+
+  const [cart, setCart] = useState(null);
+  const [status, setStatus] = useState('');
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
 
-  const id = '1'; // extract the ID from the URL
+  useEffect(() => {
+    const token = localStorage.getItem("myToken");
+    const fetchCartData = async () => {
+      try {
+        const response = await axios.get(`${url}/${cartId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, 
+          },
+        });
+        setCart(response.data);
+        setStatus(response.data.status);
+        setLoading(false);
+      } catch (error) {
+        setError(error);
+        setLoading(false);
+      }
+    };
+    fetchCartData();
+  }, [orderId]);
 
   useEffect(() => {
-    let total = 0;
-    cart.items.forEach((item) => {
-      total += item.price * item.quantity;
-    });
-    setTotalPrice(total);
+    if (cart) {
+      let total = 0;
+      cart.items.forEach((item) => {
+        total += item.price * item.quantity;
+      });
+      setTotalPrice(total);
+    }
   }, [cart]);
 
-  const handleUpdateStatus = (newStatus) => {
-    setCart({ ...cart, status: newStatus });
-    setStatus(newStatus);
+  const handleUpdateStatus = async (newStatus) => {
+    try {
+      const response = await axios.patch(`/api/orders/${cartId}`, { status: newStatus }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`, 
+        },
+      });
+      setCart(response.data);
+      setStatus(response.data.status);
+    } catch (error) {
+      setError(error);
+    }
   };
 
   const handleCancelOrder = () => {
@@ -105,11 +104,11 @@ const Page = () => {
               <>
                 <Stack spacing={2}>
 
-                <Typography variant="h5">Cart Information</Typography>
+                <Typography variant="h5">Order Information</Typography>
 
                   <Card>
                     <CardContent>
-                      <Typography variant="h6">Cart ID: {id}</Typography>
+                      <Typography variant="h6">Order ID: {id}</Typography>
                       <Typography variant="h6">Status: {status}</Typography>
                       <Typography variant="h6">Total Price: {totalPrice}</Typography>
                     </CardContent>

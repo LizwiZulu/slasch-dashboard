@@ -28,6 +28,9 @@ export const BusinessCard = ({
   const handleViewButtonClicked = () => {
     router.push(`/businessdetails/${_id}`);
   };
+  const handleOrdersButtonClicked = () => {
+    router.push(`/orders`);
+  };
   /* const handleViewButtonClicked = () => {
     //navigate to a new page with the business information and list all auctions under tha business. Create a new page called businessDeatils. 
   }; */
@@ -76,7 +79,7 @@ export const BusinessCard = ({
       <Stack
         alignItems="center"
         direction="row"
-        justifyContent="space-between"
+        justifyContent="space-around"
         spacing={2}
         sx={{ p: 1 }}
 
@@ -88,7 +91,7 @@ export const BusinessCard = ({
 
           >
             <Button variant="contained" startIcon={<SvgIcon fontSize="small"><PencilIcon /></SvgIcon>} onClick={handleEditButtonClicked}>
-              Edit business
+              Edit Business
             </Button>
 
 
@@ -96,8 +99,12 @@ export const BusinessCard = ({
         )}
 
         <Button variant="contained" startIcon={<SvgIcon fontSize="small"><EyeIcon /></SvgIcon>} onClick={handleViewButtonClicked}>
-          View business
+          View Business
         </Button>
+
+        {/* <Button variant="contained" startIcon={<SvgIcon fontSize="small"><EyeIcon /></SvgIcon>} onClick={handleOrdersButtonClicked}>
+          Orders
+        </Button> */}
         
       </Stack>
       {showModal && (

@@ -22,16 +22,8 @@ export const items = [
       </SvgIcon>
     )
   },
+   
    {
-    title: 'Cart',
-    path: '/cart',
-    icon: (
-      <SvgIcon fontSize="small">
-        <ShoppingCartIcon />
-      </SvgIcon>
-    )
-  }, 
-   /* {
     title: 'Orders',
     path: '/orders',
     icon: (
@@ -39,7 +31,7 @@ export const items = [
         <ShoppingCartIcon />
       </SvgIcon>
     )
-  },  */
+  },  
   {
     title: 'Users',
     path: '/users',
