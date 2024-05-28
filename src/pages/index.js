@@ -63,10 +63,10 @@ const Page = () => (
             
 
             <OverviewBudget
-              difference={12}
+              difference={0}
               positive
               sx={{ height: '100%' }}
-              value="$24k"
+              value="--"
             />
           </Grid>
           <Grid
@@ -75,10 +75,10 @@ const Page = () => (
             lg={3}
           >
             <OverviewTotalCustomers
-              difference={16}
+              difference={0}
               positive={false}
               sx={{ height: '100%' }}
-              value="1.6k"
+              value="--"
             />
           </Grid>
           <Grid
@@ -88,7 +88,7 @@ const Page = () => (
           >
             <OverviewTasksProgress
               sx={{ height: '100%' }}
-              value={75.5}
+              value={0}
             />
           </Grid>
           <Grid
@@ -98,7 +98,7 @@ const Page = () => (
           >
             <OverviewTotalProfit
               sx={{ height: '100%' }}
-              value="$15k"
+              value="--"
             />
           </Grid>
           {/*  <Grid
@@ -136,9 +136,11 @@ const Page = () => (
             md={12}
             lg={8}
           >
+            
             <OverviewLatestOrders
+
               orders={[
-                {
+              /*   {
                   id: 'f69f88012978187a6c12897f',
                   ref: 'DEV1049',
                   amount: 30.5,
@@ -197,7 +199,7 @@ const Page = () => (
                   },
                   createdAt: 1554670800000,
                   status: 'delivered'
-                }
+                } */
               ]}
               sx={{ height: '100%' }}
             />
@@ -210,7 +212,7 @@ const Page = () => (
           >
             <OverviewLatestProducts
               products={[
-                {
+               /*  {
                   id: '5ece2c077e39da27658aa8a9',
                   image: '/assets/products/product-1.png',
                   name: 'Healthcare Erbology',
@@ -239,7 +241,7 @@ const Page = () => (
                   image: '/assets/products/product-7.png',
                   name: 'Healthcare Ritual',
                   updatedAt: subDays(subHours(now, 5), 6).getTime()
-                }
+                } */
               ]}
               sx={{ height: '100%' }}
             />

@@ -1,8 +1,6 @@
 import Head from 'next/head';
 import { Box, Container, Stack, Typography,  } from '@mui/material';
-
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
-
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { AccountProfile } from 'src/sections/account/account-profile';
 import { AccountProfileDetails } from 'src/sections/account/account-profile-details';

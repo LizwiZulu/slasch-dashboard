@@ -8,7 +8,8 @@ export const AccountProfile = () => {
   const [user, setUser] = useState({});
 
   useEffect(() => {
-    const token = localStorage.getItem("myToken");
+    if (typeof localStorage !== 'undefined') {
+      const token = localStorage.getItem("myToken");
     const userEmail = localStorage.getItem("userEmail");
     const userId = localStorage.getItem("userId");
 
@@ -21,11 +22,13 @@ export const AccountProfile = () => {
     })
       .then(response => {
         setUser(response.data.businessOwner);
-        console.log(response.data.businessOwner.profilePicture);
+        console.log(response.data.businessOwner);
       })
       .catch(error => {
         console.error(error);
       });
+    }
+    
   }, []);
 
   return (

@@ -2,9 +2,9 @@ import Head from 'next/head';
 import {
   Box, Container, Stack, Typography, Grid, CircularProgress, Avatar, Card, Table,
   TableBody,
-  TableCell,
+  TableCell,SvgIcon,
   TableContainer, TableHead,
-  TableRow
+  TableRow, Button, Modal
 } from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import axios from 'axios';
@@ -12,12 +12,17 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { AuctionCard } from 'src/sections/auctions/auction-card';
 import Pagination from '@mui/material/Pagination';
+import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import { Auction } from 'src/sections/auctions/auction';
 
 const url = 'https://adlinc-api.onrender.com/api/slaschapp/business';
 
 const Page = () => {
+  const [showModal, setShowModal] = useState(false);
   const router = useRouter();
-  const id = router.query.id;
+  const id = router.query.id; // Business Id
   const userId = localStorage.getItem("userId");
 
   const [business, setBusiness] = useState();
@@ -41,7 +46,7 @@ const Page = () => {
       },
     });
 
-    const fetchAuctions = axios.get(`${url}/${userId}/auction`, {
+    const fetchAuctions = axios.get(`${url}/${id}/auction`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
@@ -53,6 +58,8 @@ const Page = () => {
         setBusiness(responses[0].data.business);
         setAuctions(responses[1].data.auctionData);
         setTotalPages(Math.ceil(responses[1].data.total / itemsPerPage));
+
+        console.log("Fetched:", responses[1].data)
       })
       .catch((error) => {
         setError(error);
@@ -65,6 +72,10 @@ const Page = () => {
 
   const handlePageChange = (event, value) => {
     setPage(value);
+  };
+
+  const handleAddButtonClicked = () => {
+    setShowModal(true);
   };
 
   return (
@@ -98,7 +109,7 @@ const Page = () => {
               }}
             >
               <Grid container alignItems="center">
-                
+
                 <Grid xs={12} md={6} lg={4}>
                   <Avatar
                     src={business?.BusinessHours}
@@ -140,16 +151,22 @@ const Page = () => {
                         </TableBody>
                       </Table>
                     </TableContainer>
-                    
+
                   </Stack>
                 </Grid>
-                
+
               </Grid>
             </Card>
 
 
-
-            <Typography variant="h5">All business Auctions</Typography>
+            <Stack direction="row" justifyContent="space-between" spacing={4}>
+              <Typography variant="h5">Business Auctions</Typography>
+              <div>
+                <Button variant="contained" startIcon={<SvgIcon fontSize="small"><PlusIcon /></SvgIcon>} onClick={handleAddButtonClicked}>
+                  New Auction
+                </Button>
+              </div>
+            </Stack>
 
             {auctions.length > 0 && (
               <>
@@ -162,6 +179,7 @@ const Page = () => {
                         campaignBudget={auction.campaignBudget}
                         campaignDailyBudget={auction.campaignDailyBudget}
                         _id={auction._id}
+                        businessId={business?._id}
                       />
                     </Grid>
                   ))}
@@ -179,6 +197,14 @@ const Page = () => {
           </Stack>
         </Container>
       </Box>
+      {showModal && (
+        <Dialog open={showModal} onClose={() => setShowModal(false)}>
+          <DialogContent>
+            <Auction
+            _id={business?._id} />
+          </DialogContent>
+        </Dialog>
+      )}
     </>
   );
 };

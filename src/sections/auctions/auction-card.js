@@ -18,17 +18,23 @@ export const AuctionCard = ({
   campaignDescription,
   campaignBudget,
   campaignDailyBudget,
-  _id
+  _id,
+  businessId
+
 }) => {
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
 
-  const handleEditButtonClicked = () => {
+  /* const handleEditButtonClicked = () => {
     setShowModal(true);
-  };
+  }; */
 
   const handleViewButtonClicked = () => {
-    router.push(`/auctiondetails/${_id}`);
+   /*  router.push(`/auctiondetails/${_id}`); */
+    router.push({
+      pathname: `/auctiondetails/${_id}`,
+      query: { businessId },
+    });
   };
 
   return (
@@ -110,13 +116,13 @@ export const AuctionCard = ({
           direction="row"
           spacing={1}
         >
-          {localStorage.getItem("userEmail") != "admin@adlinc.com" && (
+          {/* {localStorage.getItem("userEmail") != "admin@adlinc.com" && (
             <div>
               <Button variant="contained" startIcon={<SvgIcon fontSize="small"><PencilIcon /></SvgIcon>} onClick={handleEditButtonClicked} >
                 Edit
               </Button>
             </div>
-          )}
+          )} */}
 
           <Button variant="contained" startIcon={<SvgIcon fontSize="small"><EyeIcon /></SvgIcon>} onClick={handleViewButtonClicked}>
             View
@@ -140,5 +146,6 @@ AuctionCard.propTypes = {
   campaignDescription: PropTypes.string.isRequired,
   campaignBudget: PropTypes.string.isRequired,
   campaignDailyBudget: PropTypes.string.isRequired,
-  _id: PropTypes.string.isRequired
+  _id: PropTypes.string.isRequired,
+  businessId: PropTypes.string.isRequired
 };

@@ -11,6 +11,7 @@ export const Auction = ({ _id }) => {
   const token = localStorage.getItem("myToken");
   const userId = localStorage.getItem("userId");
   const router = useRouter();
+  const [showModal, setShowModal] = useState(false);
   const [auction, setAuction] = useState({
     campaignName: '',
     campaignDescription: '',
@@ -18,11 +19,12 @@ export const Auction = ({ _id }) => {
     campaignDailyBudget: '',
     campaignStartDate: '',
     interests: '',
+    status:'',
      
   });
 
-  useEffect(() => {
-    if (!_id) return;
+  /* useEffect(() => {
+    if (!_id) return; 
 
     const fetchAuction = async () => {
       const response = await axios.get(`${url}/${userId}/auction/${_id}`, {
@@ -34,14 +36,14 @@ export const Auction = ({ _id }) => {
       setAuction(response.data.business);///
     };
     fetchAuction();
-  }, [_id]);
+  }, [_id]); */
 
  
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (!_id) {
-      axios.post(`${url}/${userId}/auction`, auction, {
+    
+      axios.post(`${url}/${_id}/auction`, auction, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
@@ -51,44 +53,30 @@ export const Auction = ({ _id }) => {
         console.log('Auction created successfully!');
         //New code starts here
         handleModalClose();
+        router.push(`/businessdetails/${_id}`);
       })
       .catch((error) => {
         console.error('Error creating business:', error);
       });
-      router.push('/auctions')
-
-    } else {
-      axios.patch(`${url}/${userId}/auction/${_id}`, auction, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-    })
-      .then((response) => {
-        console.log('Auction updated successfully!');
-        //New code starts here
-        handleModalClose();
-      })
-      .catch((error) => {
-        console.error('Error updating business:', error);
-      });
-      router.push('/auctions')
-    }
-
-    
+      /* router.push('/auctions'); */
+      handleModalClose();
+      router.push(`/businessdetails/${_id}`);
   };
 
   console.log(auction);
 
   const handleModalClose = () => {
-    setModalOpen(false);
+    setShowModal(false);
   };
+  /* const handleModalClose = () => {
+    setModalOpen(false);
+  }; */
 
   return (
     <Box sx={{ flexGrow: 1, p: 3 }}>
       <Paper sx={{ p: 3 }}>
         <Typography variant="h4" component="h2" gutterBottom>
-        {..._id ? "Update Auction" : "Add New Auction"}
+        Add New Auction
         </Typography>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
@@ -159,11 +147,22 @@ export const Auction = ({ _id }) => {
                 fullWidth
               />
             </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                id="status"
+                name="status"
+                label="Status"
+                value={auction.status}
+                onChange={(event) => setAuction({ ...auction, status: event.target.value })}
+                fullWidth
+              />
+            </Grid>
        
             
             <Grid item xs={12}>
               <Button type="submit" variant="contained" color="primary"  fullWidth>
-              {..._id ? "Update Auction" : "Add Auction"}
+              Add Auction
               </Button>
             </Grid>
           </Grid>

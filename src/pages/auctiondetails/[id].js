@@ -20,13 +20,18 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { BaitplantCard } from 'src/sections/baitplants/baitplant-card';
+import { useLocation } from 'react-router-dom';
+
 
 const url = 'https://adlinc-api.onrender.com/api/slaschapp/';
 
 const Page = () => {
   const router = useRouter();
-  const id = router.query.id; // Auction ID
+  const auctionId = router.query.id; // Auction ID
+  const busId = new URLSearchParams(window.location.search).get('businessId');
+  //const busId = router.query.businessiId; // Auction ID
   const userId = localStorage.getItem('userId');
+
 
   const [auction, setAuction] = useState(null);
   const [baits, setBaits] = useState([]);
@@ -36,20 +41,23 @@ const Page = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(6);
 
+  console.log("Business Id:", busId);
+  console.log("Auction Id:", auctionId);
+
   useEffect(() => {
     const token = localStorage.getItem('myToken');
 
     setIsLoading(true);
     setError(null);
 
-    const fetchAuction = axios.get(`${url}business/${userId}/auction/${id}`, {
+    const fetchAuction = axios.get(`${url}business/${busId}/auction/${auctionId}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
     });
 
-    const fetchBaits = axios.get(`${url}bait/auction/${id}/bait`, {
+    const fetchBaits = axios.get(`${url}bait/auction/${auctionId}/bait`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
@@ -62,16 +70,17 @@ const Page = () => {
         setBaits(response[1].data);
         setTotalPages(Math.ceil(response[1].data.total / itemsPerPage));
 
-        console.log("Fetched auction:", auction);
-        console.log(baits);
+        console.log("Fetched auction:", response[0].data.auctionData);
+        console.log(response[1].data);
       })
       .catch((error) => {
         setError(error);
+        console.log(error);
       })
       .finally(() => {
         setIsLoading(false);
       });
-  }, [id, userId, page, itemsPerPage]); // Update on changes to ID, user, page, or itemsPerPage
+  }, [auctionId, userId, page, itemsPerPage]); // Update on changes to ID, user, page, or itemsPerPage
 
   const handlePageChange = (event, value) => {
     setPage(value);

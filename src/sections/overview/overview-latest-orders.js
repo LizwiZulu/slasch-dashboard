@@ -13,7 +13,7 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  TableRow
+  TableRow, Typography
 } from '@mui/material';
 import { Scrollbar } from 'src/components/scrollbar';
 import { SeverityPill } from 'src/components/severity-pill';
@@ -32,6 +32,9 @@ export const OverviewLatestOrders = (props) => {
       <CardHeader title="Latest Orders" />
       <Scrollbar sx={{ flexGrow: 1 }}>
         <Box sx={{ minWidth: 800 }}>
+        <Typography color="text.secondary"
+      display="inline"
+      variant="body1" sx={{pb:2, px: 3}} >You have no orders </Typography>
           <Table>
             <TableHead>
               <TableRow>

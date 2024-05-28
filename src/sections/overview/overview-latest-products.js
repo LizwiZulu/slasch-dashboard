@@ -14,7 +14,7 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
-  SvgIcon
+  SvgIcon, Typography
 } from '@mui/material';
 
 export const OverviewLatestProducts = (props) => {
@@ -23,6 +23,9 @@ export const OverviewLatestProducts = (props) => {
   return (
     <Card sx={sx}>
       <CardHeader title="Latest Baits" />
+      <Typography color="text.secondary"
+      display="inline"
+      variant="body1" sx={{pb:2, px: 3}} > No baits availbale </Typography>
       <List>
         {products.map((product, index) => {
           const hasDivider = index < products.length - 1;
