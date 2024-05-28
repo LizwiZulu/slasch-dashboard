@@ -15,7 +15,7 @@ import { SvgIcon } from '@mui/material';
 let items = [];
 
 // Fix: Using loose comparison (==) for email check (not recommended for production)
-if (typeof localStorage !== 'undefined' && localStorage.getItem("userEmail") === "admin@adlinc.com") {
+if (typeof localStorage !== 'undefined' && localStorage.getItem("userEmail") == "admin@adlinc.com") {
   console.log("IF STATEMENT EXECUTED");
   items = [
     {
@@ -67,7 +67,7 @@ if (typeof localStorage !== 'undefined' && localStorage.getItem("userEmail") ===
         </SvgIcon>
       )
     },
-    {
+    /* {
       title: 'Auctions',
       path: '/auctions',
       icon: (
@@ -75,7 +75,7 @@ if (typeof localStorage !== 'undefined' && localStorage.getItem("userEmail") ===
           <FlagIcon />
         </SvgIcon>
       )
-    },
+    }, */
     {
       title: 'Business',
       path: '/business',

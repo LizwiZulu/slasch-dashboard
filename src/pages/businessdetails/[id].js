@@ -33,6 +33,8 @@ const Page = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(6);
 
+  console.log("Business Id:", id)
+
   useEffect(() => {
     const token = localStorage.getItem("myToken");
 
