@@ -18,10 +18,11 @@ export const Business = ({ _id }) => {
     BusinessCategory: '',
     BusinessLocation: '',
     BusinessHours: '',
+    BusinessLogo: '',
     verificationDoc: '',
-    status: '',
     socials: '',
-     
+    status: '',
+
   });
 
   useEffect(() => {
@@ -64,41 +65,42 @@ export const Business = ({ _id }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!_id) {
-      axios.post('https://adlinc-api.onrender.com/api/slaschapp/business', business, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-    })
-      .then((response) => {
-        console.log('Business created successfully!');
-        //New code starts here
-        handleModalClose();
+      axios.post(url, business, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
       })
-      .catch((error) => {
-        console.error('Error creating business:', error);
-      });
-      router.push('/businesses')
+        .then((response) => {
+          console.log('Business created successfully!');
+          console.log(response);
+
+          //New code starts here
+          //handleModalClose();
+        })
+        .catch((error) => {
+          console.error('Error creating business:', error);
+        });
+      router.push('/business')
 
     } else {
       axios.patch(`${url}/${_id}`, business, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-    })
-      .then((response) => {
-        console.log('Business updates successfully!');
-        //New code starts here
-        handleModalClose();
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
       })
-      .catch((error) => {
-        console.error('Error updating business:', error);
-      });
-      router.push('/businesses')
+        .then((response) => {
+          console.log('Business updates successfully!');
+          //New code starts here
+          handleModalClose();
+        })
+        .catch((error) => {
+          console.error('Error updating business:', error);
+        });
+      router.push('/business')
     }
 
-    
   };
 
   console.log(business);
@@ -111,7 +113,7 @@ export const Business = ({ _id }) => {
     <Box sx={{ flexGrow: 1, p: 3 }}>
       <Paper sx={{ p: 3 }}>
         <Typography variant="h4" component="h2" gutterBottom>
-        {..._id ? "Update Business" : "Add new Business"}
+          {..._id ? "Update Business" : "Add new Business"}
         </Typography>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
@@ -123,6 +125,17 @@ export const Business = ({ _id }) => {
                 label="Business Name"
                 value={business.BusinessName}
                 onChange={(event) => setBusiness({ ...business, BusinessName: event.target.value })}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                id="BusinessLogo"
+                name="BusinessLogo"
+                label="Business Logo"
+                value={business.BusinessLogo}
+                onChange={(event) => setBusiness({ ...business, BusinessLogo: event.target.value })}
                 fullWidth
               />
             </Grid>
@@ -148,19 +161,7 @@ export const Business = ({ _id }) => {
                 fullWidth
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-            <FormControlLabel
-    control={
-      <Checkbox
-        id="AcceptTermsAndConditions"
-        name="AcceptTermsAndConditions"
-        value="yes"
-        onChange={(event) => setBusiness({ ...business, AcceptTermsAndConditions: event.target.checked ? "yes" : "No" })}
-      />
-    }
-    label="Accept Terms and Conditions"
-  />
-            </Grid>
+            
             <Grid item xs={12} sm={6}>
               <TextField
                 required
@@ -227,9 +228,22 @@ export const Business = ({ _id }) => {
                 fullWidth
               />
             </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    id="AcceptTermsAndConditions"
+                    name="AcceptTermsAndConditions"
+                    value="yes"
+                    onChange={(event) => setBusiness({ ...business, AcceptTermsAndConditions: event.target.checked ? "yes" : "No" })}
+                  />
+                }
+                label="Accept Terms and Conditions"
+              />
+            </Grid>
             <Grid item xs={12}>
-              <Button type="submit" variant="contained" color="primary"  fullWidth>
-              {..._id ? "Update Business" : "Add Business"}
+              <Button type="submit" variant="contained" color="primary" fullWidth>
+                {..._id ? "Update Business" : "Add Business"}
               </Button>
             </Grid>
           </Grid>
@@ -238,18 +252,18 @@ export const Business = ({ _id }) => {
     </Box>
   );
 };
-  
+
   Business.propTypes = {
-    BusinessName: PropTypes.string,
-    PhoneNumber: PropTypes.string,
-    BusinessEmail: PropTypes.string,
-    AcceptTermsAndConditions: PropTypes.string,
-    BusinessCategory: PropTypes.string,
-    BusinessLocation: PropTypes.string,
-    BusinessHours: PropTypes.string,
-    verificationDoc: PropTypes.string,
-    status: PropTypes.string,
-    socials: PropTypes.string,
-    _id: PropTypes.string,
-    
-  };
+  BusinessName: PropTypes.string,
+  PhoneNumber: PropTypes.string,
+  BusinessEmail: PropTypes.string,
+  AcceptTermsAndConditions: PropTypes.string,
+  BusinessCategory: PropTypes.string,
+  BusinessLocation: PropTypes.string,
+  BusinessHours: PropTypes.string,
+  verificationDoc: PropTypes.string,
+  status: PropTypes.string,
+  socials: PropTypes.string,
+   _id: PropTypes.string, 
+
+}; 

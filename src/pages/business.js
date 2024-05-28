@@ -1,3 +1,5 @@
+// This page to have and list all business for an individual business owner
+
 import Head from 'next/head';
 import ArrowUpOnSquareIcon from '@heroicons/react/24/solid/ArrowUpOnSquareIcon';
 import ArrowDownOnSquareIcon from '@heroicons/react/24/solid/ArrowDownOnSquareIcon';
@@ -15,18 +17,20 @@ import {
   Modal
 } from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
-import { Auction } from 'src/sections/auctions/auction';
-import { AuctionCard } from 'src/sections/auctions/auction-card';
+import { BusinessCard } from 'src/sections/businesses/business-card';
+import { Business } from 'src/sections/businesses/business';
+import { BusinessesSearch } from 'src/sections/businesses/businesses-search';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 
-const url = 'https://adlinc-api.onrender.com/api/slaschapp/business/';
-const aurl = 'https://adlinc-api.onrender.com/api/slaschapp/admin/auctions';
+const url = 'https://adlinc-api.onrender.com/api/slaschapp/business';
+const aurl = 'https://adlinc-api.onrender.com/api/slaschapp/admin/businesses';
+
 
 const Page = () => {
-  const [auctions, setAuctions] = useState([]);
+  const [businesses, setBusinesses] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -36,20 +40,20 @@ const Page = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("myToken");
-    const userId = localStorage.getItem("userId");
     const userEmail = localStorage.getItem("userEmail");
     if (userEmail === "admin@adlinc.com") {
       setIsLoading(true);
       setError(null);
-      axios.get(aurl, {
+
+      axios.get(`${aurl}?page=${page}&itemsPerPage=${itemsPerPage}`, {
         headers: {
           'Content-Type': 'application/json',
-          
+          'Authorization': `Bearer ${token}`, 
         },
       })
         .then((response) => {
-          console.log("Fetched auctions:", response.data.auctionData);
-          setAuctions(response.data.auctionData);
+         // console.log("Fetched companies:", response.data.businesses);
+          setBusinesses(response.data.businesses);
           setTotalPages(Math.ceil(response.data.total / itemsPerPage));
         })
         .catch((error) => {
@@ -59,17 +63,18 @@ const Page = () => {
           setIsLoading(false);
         });
     } else {
+
       setIsLoading(true);
       setError(null);
-      axios.get(`${url}${userId}/auction`, {
+      axios.get(`${url}?page=${page}&itemsPerPage=${itemsPerPage}`, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
       })
         .then((response) => {
-        console.log("Fetched auctions:", response);
-          setAuctions(response.data.auctionData);
+         console.log("Fetched businesses:", response.data.businesses); //replace businesses with BusinessData
+          setBusinesses(response.data.businesses);
           setTotalPages(Math.ceil(response.data.total / itemsPerPage));
         })
         .catch((error) => {
@@ -92,14 +97,15 @@ const Page = () => {
   return (
     <>
       <Head>
-        <title>Aunctions</title>
+        <title>Businesses</title>
       </Head>
-      <Box component="main" sx={{ flexGrow: 1, py: 3}}>
+      <Box component="main" sx={{ flexGrow: 1, py: 3 }}>
         <Container maxWidth="xl">
-          <Stack spacing={3}>
-            <Stack direction="row" justifyContent="space-between" spacing={4}>
+          <Stack spacing={3}>  {/* spacing={3} */}
+            <Stack direction="row" justifyContent="space-between" spacing={4}>   {/* spacing={4} */}
               <Stack spacing={1}>
-                <Typography variant="h4">{localStorage.getItem("userEmail") != "admin@adlinc.com"? "My" : "All"} Auctions</Typography>
+                <Typography variant="h4">{localStorage.getItem("userEmail") != "admin@adlinc.com"? "My" : "All"} Businesses</Typography>
+                
                 {/* <Stack alignItems="center" direction="row" spacing={1}>
                   <Button color="inherit" startIcon={<SvgIcon fontSize="small"><ArrowUpOnSquareIcon /></SvgIcon>}>
                     Import
@@ -117,6 +123,7 @@ const Page = () => {
                 </Button>
               </div>
               )}
+
             </Stack>
             {/* <BusinessesSearch /> */}
             {isLoading && (
@@ -126,25 +133,24 @@ const Page = () => {
             )}
             {error && (
               <Typography variant="body2" color="error">
-                Error fetching auctions: {error.message}
+                Error fetching businesses: {error.message}
               </Typography>
             )}
-            {auctions.length > 0 && (
+            {businesses.length >= 0 && (
               <>
-                <Grid container spacing={3}>
-                  {auctions.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((auction, index) => (
-                    <Grid xs={12} md={6} lg={4} key={auction._id}>
-                      <AuctionCard
-                        campaignName={auction.campaignName}
-                        campaignDescription={auction.campaignDescription}
-                        campaignBudget={auction.campaignBudget}
-                        campaignDailyBudget={auction.campaignDailyBudget}
-                        _id={auction._id}
-
+                <Grid container spacing={3} >
+                  {businesses.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((business, index) => (
+                    <Grid xs={12} md={6} lg={4} key={business._id}>
+                      <BusinessCard
+                        BusinessName={business.BusinessName}
+                        BusinessCategory={business.BusinessCategory}
+                        BusinessLocation={business.BusinessLocation}
+                        BusinessHours={business.BusinessHours}
+                        _id={business._id}
                       />
                     </Grid>
                   ))}
-                 
+                  
                 </Grid>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                   <Pagination
@@ -162,7 +168,7 @@ const Page = () => {
       {showModal && (
         <Dialog open={showModal} onClose={() => setShowModal(false)}>
           <DialogContent>
-            <Auction />
+            <Business />
           </DialogContent>
         </Dialog>
       )}

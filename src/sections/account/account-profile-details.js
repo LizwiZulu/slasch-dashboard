@@ -1,4 +1,5 @@
-import { useCallback, useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import axios from 'axios';
 import {
   Box,
   Button,
@@ -8,8 +9,11 @@ import {
   CardHeader,
   Divider,
   TextField,
-  Unstable_Grid2 as Grid
 } from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
+
+const url = 'https://adlinc-api.onrender.com/api/slaschapp/business/owner';
+const userId = localStorage.getItem("userId");
 
 const states = [
   {
@@ -31,18 +35,38 @@ const states = [
 ];
 
 export const AccountProfileDetails = () => {
-  const [values, setValues] = useState({
-    firstName: 'Samkelo',
-    lastName: 'Zondi',
-    email: 'demo@adlinc.com',
-    phone: '',
-    state: 'Gauteng',
-    country: 'South Africa'
+  const [user, setUser] = useState({
+    firstname: '',
+    surname: '',
+    email: '',
+    phoneNumber: '',
+    state: '',
+    locationOrAddress: ''
   });
+
+  useEffect(() => {
+    const token = localStorage.getItem("myToken");
+    const userEmail = localStorage.getItem("userEmail");
+    const userId = localStorage.getItem("userId");
+
+    axios.get(`${url}/${userId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`, 
+      },
+    })
+      .then(response => {
+        setUser(response.data.businessOwner);
+        console.log(response.data.businessOwner.profilePicture);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
 
   const handleChange = useCallback(
     (event) => {
-      setValues((prevState) => ({
+      setUser((prevState) => ({
         ...prevState,
         [event.target.name]: event.target.value
       }));
@@ -50,12 +74,24 @@ export const AccountProfileDetails = () => {
     []
   );
 
-  const handleSubmit = useCallback(
+   const handleSubmit = useCallback(
     (event) => {
       event.preventDefault();
+      axios.put(`${url}/${userId}`, user, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`, 
+        },
+      })
+        .then(response => {
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.error(error);
+        });
     },
-    []
-  );
+    [user]
+  ); 
 
   return (
     <form
@@ -82,10 +118,10 @@ export const AccountProfileDetails = () => {
                   fullWidth
                   helperText="Please specify the first name"
                   label="First name"
-                  name="firstName"
+                  name="firstname"
                   onChange={handleChange}
                   required
-                  value={values.firstName}
+                  value={user.firstname}
                 />
               </Grid>
               <Grid
@@ -95,10 +131,10 @@ export const AccountProfileDetails = () => {
                 <TextField
                   fullWidth
                   label="Last name"
-                  name="lastName"
+                  name="surname"
                   onChange={handleChange}
                   required
-                  value={values.lastName}
+                  value={user.surname}
                 />
               </Grid>
               <Grid
@@ -111,7 +147,7 @@ export const AccountProfileDetails = () => {
                   name="email"
                   onChange={handleChange}
                   required
-                  value={values.email}
+                  value={user.email}
                 />
               </Grid>
               <Grid
@@ -121,10 +157,10 @@ export const AccountProfileDetails = () => {
                 <TextField
                   fullWidth
                   label="Phone Number"
-                  name="phone"
+                  name="phoneNumber"
                   onChange={handleChange}
                   type="number"
-                  value={values.phone}
+                  value={user.phoneNumber}
                 />
               </Grid>
               <Grid
@@ -133,11 +169,11 @@ export const AccountProfileDetails = () => {
               >
                 <TextField
                   fullWidth
-                  label="Country"
-                  name="country"
+                  label="Location"
+                  name="locationOrAddress"
                   onChange={handleChange}
                   required
-                  value={values.country}
+                  value={user.locationOrAddress}
                 />
               </Grid>
               <Grid
@@ -152,7 +188,7 @@ export const AccountProfileDetails = () => {
                   required
                   select
                   SelectProps={{ native: true }}
-                  value={values.state}
+                  value={user.state}
                 >
                   {states.map((option) => (
                     <option

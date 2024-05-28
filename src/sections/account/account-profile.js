@@ -1,69 +1,81 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Divider,
-  Typography
-} from '@mui/material';
+import { useState, useEffect } from 'react';
+import { Card, CardContent, Box, Avatar, Typography, Button, Divider, CardActions } from '@mui/material';
+import axios from 'axios';
 
-const user = {
-  avatar: '/assets/avatars/avatar-anika-visser.png',
-  city: 'Johannesburg',
-  country: 'South Africa',
-  jobTitle: 'Senior Developer',
-  name: 'Samkelo Zondi',
-  timezone: 'GMT+2'
+const url = 'https://adlinc-api.onrender.com/api/slaschapp/business/owner';
+
+export const AccountProfile = () => {
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    const token = localStorage.getItem("myToken");
+    const userEmail = localStorage.getItem("userEmail");
+    const userId = localStorage.getItem("userId");
+
+    
+    axios.get(`${url}/${userId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`, 
+      },
+    })
+      .then(response => {
+        setUser(response.data.businessOwner);
+        console.log(response.data.businessOwner.profilePicture);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+
+  return (
+     <Card>
+        <CardContent>
+        <Box
+          sx={{
+            alignItems: 'center',
+            display: 'flex',
+            flexDirection: 'column'
+          }}
+        >
+          <Avatar
+            src={user.profilePicture}
+            sx={{
+              height: 80,
+              mb: 2,
+              width: 80
+            }}
+          />
+          <Typography
+            gutterBottom
+            variant="h5"
+          >
+            {user.firstname} {user.surname}
+          </Typography>
+          <Typography
+            color="text.secondary"
+            variant="body2"
+          >
+            {user.locationOrAddress} 
+          </Typography>
+          <Typography
+            color="text.secondary"
+            variant="body2"
+          >
+            {user.phoneNumber}
+          </Typography>
+        </Box>
+      </CardContent>  
+      <Divider />
+      <CardActions>
+        <Button
+          fullWidth
+          variant="text"
+        >
+          Upload picture
+        </Button>
+      </CardActions>
+    </Card> 
+  );
 };
 
-export const AccountProfile = () => (
-  <Card>
-    <CardContent>
-      <Box
-        sx={{
-          alignItems: 'center',
-          display: 'flex',
-          flexDirection: 'column'
-        }}
-      >
-        <Avatar
-          src={user.avatar}
-          sx={{
-            height: 80,
-            mb: 2,
-            width: 80
-          }}
-        />
-        <Typography
-          gutterBottom
-          variant="h5"
-        >
-          {user.name}
-        </Typography>
-        <Typography
-          color="text.secondary"
-          variant="body2"
-        >
-          {user.city} {user.country}
-        </Typography>
-        <Typography
-          color="text.secondary"
-          variant="body2"
-        >
-          {user.timezone}
-        </Typography>
-      </Box>
-    </CardContent>
-    <Divider />
-    <CardActions>
-      <Button
-        fullWidth
-        variant="text"
-      >
-        Upload picture
-      </Button>
-    </CardActions>
-  </Card>
-);
