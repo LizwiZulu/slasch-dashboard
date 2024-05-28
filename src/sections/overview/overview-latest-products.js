@@ -25,7 +25,7 @@ export const OverviewLatestProducts = (props) => {
       <CardHeader title="Latest Baits" />
       <Typography color="text.secondary"
       display="inline"
-      variant="body1" sx={{pb:2, px: 3}} > No baits availbale </Typography>
+      variant="body1" sx={{pb:2, px: 3}} > No baits available </Typography>
       <List>
         {products.map((product, index) => {
           const hasDivider = index < products.length - 1;
