@@ -7,6 +7,57 @@ import { Grid, TextField, Button, FormControlLabel, Checkbox, Box, Typography, P
 
 const url = 'https://adlinc-api.onrender.com/api/slaschapp/business';
 
+const statuses = [
+  {
+    value: 'Active',
+    label: 'Active'
+  },
+  {
+    value: 'Pending',
+    label: 'Pending'
+  },
+  {
+    value: 'Suspended',
+    label: 'Suspended'
+  },
+  {
+    value: 'Revoked',
+    label: 'Revoked'
+  },
+  
+];
+const categories = [
+  {
+    value: 'Fashion And Apparel',
+    label: 'Fashion & Apparel'
+  },
+  {
+    value: 'Food And Drinks',
+    label: 'Food & Drinks'
+  },
+  {
+    value: 'Beauty And Cosmetics',
+    label: 'Beauty & Cosmetics'
+  },
+  {
+    value: 'Tech And Electronics',
+    label: 'Tech & Electronics'
+  },
+  {
+    value: 'Sneakers',
+    label: 'Sneakers'
+  },
+  {
+    value: 'Home',
+    label: 'Home'
+  },
+  {
+    value: 'Jewellery',
+    label: 'Jewellery'
+  },
+  
+];
+
 export const Business = ({ _id }) => {
   const token = localStorage.getItem("myToken");
   const router = useRouter();
@@ -22,6 +73,8 @@ export const Business = ({ _id }) => {
     verificationDoc: '',
     socials: '',
     status: '',
+    BusinessBio: '',
+    BusinessType: '',
 
   });
 
@@ -139,6 +192,29 @@ export const Business = ({ _id }) => {
                 fullWidth
               />
             </Grid>
+            
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                id="BusinessBio"
+                name="BusinessBio"
+                label="Business Bio"
+                value={business.BusinessBio}
+                onChange={(event) => setBusiness({ ...business, BusinessBio: event.target.value })}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                id="BusinessType"
+                name="BusinessType"
+                label="Business Type"
+                value={business.BusinessType}
+                onChange={(event) => setBusiness({ ...business, BusinessType: event.target.value })}
+                fullWidth
+              />
+            </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 required
@@ -162,17 +238,32 @@ export const Business = ({ _id }) => {
               />
             </Grid>
             
-            <Grid item xs={12} sm={6}>
+            <Grid
+              item
+              xs={12}
+              sm={6}
+            >
               <TextField
-                required
-                id="BusinessCategory"
-                name="BusinessCategory"
-                label="Business Category"
-                value={business.BusinessCategory}
-                onChange={(event) => setBusiness({ ...business, BusinessCategory: event.target.value })}
                 fullWidth
-              />
+                label="Business Category"
+                name="BusinessCategory"
+                onChange={(event) => setBusiness({ ...business, BusinessCategory: event.target.value })}
+                required
+                select
+                SelectProps={{ native: false }}
+                value={business.BusinessCategory}
+              >
+                {categories.map((option) => (
+                  <option
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                ))}
+              </TextField>
             </Grid>
+
             <Grid item xs={12} sm={6}>
               <TextField
                 required
@@ -206,17 +297,33 @@ export const Business = ({ _id }) => {
                 fullWidth
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+
+            <Grid
+              item
+              xs={12}
+              sm={6}
+            >
               <TextField
-                required
-                id="status"
-                name="status"
-                label="Status"
-                value={business.status}
-                onChange={(event) => setBusiness({ ...business, status: event.target.value })}
                 fullWidth
-              />
+                label="Select Status"
+                name="status"
+                onChange={(event) => setBusiness({ ...business, status: event.target.value })}
+                required
+                select
+                SelectProps={{ native: false }}
+                value={business.status}
+              >
+                {statuses.map((option) => (
+                  <option
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                ))}
+              </TextField>
             </Grid>
+
             <Grid item xs={12} sm={6}>
               <TextField
                 required
@@ -228,7 +335,7 @@ export const Business = ({ _id }) => {
                 fullWidth
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={12}>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -264,6 +371,8 @@ export const Business = ({ _id }) => {
   verificationDoc: PropTypes.string,
   status: PropTypes.string,
   socials: PropTypes.string,
+  BusinessBio: PropTypes.string,
+    BusinessType: PropTypes.string,
    _id: PropTypes.string, 
 
 }; 

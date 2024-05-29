@@ -30,7 +30,7 @@ export const AuctionCard = ({
   }; */
 
   const handleViewButtonClicked = () => {
-   /*  router.push(`/auctiondetails/${_id}`); */
+   
     router.push({
       pathname: `/auctiondetails/${_id}`,
       query: { businessId },
@@ -116,13 +116,13 @@ export const AuctionCard = ({
           direction="row"
           spacing={1}
         >
-          {/* {localStorage.getItem("userEmail") != "admin@adlinc.com" && (
+           {/* {localStorage.getItem("userEmail") != "admin@adlinc.com" && (
             <div>
               <Button variant="contained" startIcon={<SvgIcon fontSize="small"><PencilIcon /></SvgIcon>} onClick={handleEditButtonClicked} >
                 Edit
               </Button>
             </div>
-          )} */}
+          )}  */}
 
           <Button variant="contained" startIcon={<SvgIcon fontSize="small"><EyeIcon /></SvgIcon>} onClick={handleViewButtonClicked}>
             View

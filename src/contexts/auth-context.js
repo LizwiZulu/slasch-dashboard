@@ -163,7 +163,7 @@ export const AuthProvider = (props) => {
     });
   };
 
-  const signUp = async (firstname, secondname, surname, profilePicture, phoneNumber, email, password, AcceptTermsAndConditions, locationOrAddress, birthday, IdNumber, IdDocumentLink, gender) => {
+  const signUp = async (firstname, secondname, surname, profilePicture, phoneNumber, email, password, AcceptTermsAndConditions, locationOrAddress, birthday, IdNumber, IdDocumentLink, gender, status) => {
     try {
       const userData = {
         firstname: firstname,
@@ -178,10 +178,25 @@ export const AuthProvider = (props) => {
         birthday: birthday,
         IdNumber: IdNumber,
         IdDocumentLink: IdDocumentLink,
-        gender: gender
+        gender: gender,
+        status: status,
       };
   
-      const response = await axios.post('https://adlinc-api.onrender.com/api/slaschapp/auth/register/owner', userData, {
+      try {
+        const response = await axios.post('https://adlinc-api.onrender.com/api/slaschapp/auth/register/owner', userData, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+       // console.log(response);
+      } catch (error) {
+        console.error('Error registering user:', error);
+        if (error.response) {
+          console.error('Error status:', error.response.status);
+          console.error('Error data:', error.response.data);
+        }
+      }
+     /*  const response = await axios.post('https://adlinc-api.onrender.com/api/slaschapp/auth/register/owner', userData, {
         headers: {
           'Content-Type': 'application/json'
         }
@@ -189,16 +204,17 @@ export const AuthProvider = (props) => {
   
       if (response.status !== 201) {
         throw new Error('There was an error registering the user');
-      }
+        
+      } */
 
       console.log(response.data.id);
   
-      const user = {
+      /* const user = {
         id: response.data.id,
         avatar: '/assets/avatars/avatar-anika-visser.png',
         name: response.data.name,
         email: response.data.email
-      };
+      }; */
   
       dispatch({
         type: HANDLERS.SIGN_IN,

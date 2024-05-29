@@ -3,9 +3,29 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { Box, Button, Link, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, Link, Stack, TextField, Typography, Checkbox, FormControlLabel, } from '@mui/material';
 import { useAuth } from 'src/hooks/use-auth';
 import { Layout as AuthLayout } from 'src/layouts/auth/layout';
+
+const statuses = [
+  {
+    value: 'Active',
+    label: 'Active'
+  },
+  /* {
+    value: 'Active',
+    label: 'Active'
+  },
+  {
+    value: 'Suspended',
+    label: 'Suspended'
+  },
+  {
+    value: 'Revoked',
+    label: 'Revoked'
+  },
+ */
+];
 
 const Page = () => {
   const router = useRouter();
@@ -25,6 +45,7 @@ const Page = () => {
       IdNumber: '',
       IdDocumentLink: '',
       gender: '',
+      status: '',
       submit: null
     },
     validationSchema: Yup.object({
@@ -41,49 +62,56 @@ const Page = () => {
         .max(255)
         .required('Surname is required'),
       profilePicture: Yup
-      .string()
-      .max(255)
-      .required('First Name is required'),
+        .string()
+        .max(255)
+        .required('picture is required'),
       phoneNumber: Yup
         .string()
         .max(255)
         .required('Phone Number is required'),
       email: Yup
-      .string()
-      .max(255)
-      .required('First Name is required'),
+        .string()
+        .max(255)
+        .required('Email is required'),
       password: Yup
         .string()
         .max(255)
         .required('Password is required'),
-      AcceptTermsAndConditions: Yup
+      /* AcceptTermsAndConditions: Yup
       .string()
       .max(255)
-      .required('First Name is required'),
+      .required('First Name is required'), */
+      AcceptTermsAndConditions: Yup
+        .string()
+        .required('Accept Terms and Conditions is required'),
       locationOrAddress: Yup
         .string()
         .max(255)
         .required('Location or Address is required'),
       birthday: Yup
-      .string()
-      .max(255)
-      .required('First Name is required'),
+        .string()
+        .max(255)
+        .required('First Name is required'),
       IdNumber: Yup
-      .string()
-      .max(255)
-      .required('First Name is required'),
+        .string()
+        .max(255)
+        .required('First Name is required'),
       IdDocumentLink: Yup
-      .string()
-      .max(255)
-      .required('First Name is required'),
+        .string()
+        .max(255)
+        .required('First Name is required'),
       gender: Yup
-      .string()
-      .max(255)
-      .required('First Name is required'),
+        .string()
+        .max(255)
+        .required('First Name is required'),
+      status: Yup
+        .string()
+        .max(255)
+        .required('Status is required'),
     }),
     onSubmit: async (values, helpers) => {
       try {
-        await auth.signUp(values.firstname, values.secondname, values.surname, values.profilePicture, values.phoneNumber, values.email, values.password, values.AcceptTermsAndConditions, values.locationOrAddress, values.birthday, values.IdNumber, values.IdDocumentLink, values.gender);
+        await auth.signUp(values.firstname, values.secondname, values.surname, values.profilePicture, values.phoneNumber, values.email, values.password, values.AcceptTermsAndConditions, values.locationOrAddress, values.birthday, values.IdNumber, values.IdDocumentLink, values.gender, values.status);
         router.push('/');
       } catch (err) {
         helpers.setStatus({ success: false });
@@ -92,6 +120,8 @@ const Page = () => {
       }
     }
   });
+
+  /* console.log(formik.values); */
 
   return (
     <>
@@ -174,145 +204,178 @@ const Page = () => {
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
                   value={formik.values.surname}
-                  />
-                  <TextField
-                    error={!!(formik.touched.profilePicture && formik.errors.profilePicture)}
-                    fullWidth
-                    helperText={formik.touched.profilePicture && formik.errors.profilePicture}
-                    label="Profile Picture"
-                    name="profilePicture"
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    /* type="file" */
-                    value={formik.values.profilePicture}
-                  />
-                  <TextField
-                    error={!!(formik.touched.phoneNumber && formik.errors.phoneNumber)}
-                    fullWidth
-                    helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
-                    label="Phone Number"
-                    name="phoneNumber"
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    /* type="tel" */
-                    value={formik.values.phoneNumber}
-                  />
-                  <TextField
-                    error={!!(formik.touched.email && formik.errors.email)}
-                    fullWidth
-                    helperText={formik.touched.email && formik.errors.email}
-                    label="Email Address"
-                    name="email"
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    /* type="email" */
-                    value={formik.values.email}
-                  />
-                  <TextField
-                    error={!!(formik.touched.password && formik.errors.password)}
-                    fullWidth
-                    helperText={formik.touched.password && formik.errors.password}
-                    label="Password"
-                    name="password"
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    /* type="password" */
-                    value={formik.values.password}
-                  />
-                  <TextField
-                    error={!!(formik.touched.AcceptTermsAndConditions && formik.errors.AcceptTermsAndConditions)}
-                    fullWidth
-                    helperText={formik.touched.AcceptTermsAndConditions && formik.errors.AcceptTermsAndConditions}
-                    label="Accept Terms and Conditions"
-                    name="AcceptTermsAndConditions"
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    /* type="checkbox" */
-                    value={formik.values.AcceptTermsAndConditions}
-                  />
-                  <TextField
-                    error={!!(formik.touched.locationOrAddress && formik.errors.locationOrAddress)}
-                    fullWidth
-                    helperText={formik.touched.locationOrAddress && formik.errors.locationOrAddress}
-                    label="Location or Address"
-                    name="locationOrAddress"
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    value={formik.values.locationOrAddress}
-                  />
-                  <TextField
-                    error={!!(formik.touched.birthday && formik.errors.birthday)}
-                    fullWidth
-                    helperText={formik.touched.birthday && formik.errors.birthday}
-                    label="Birthday"
-                    name="birthday"
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    /* type="date" */
-                    value={formik.values.birthday}
-                  />
-                  <TextField
-                    error={!!(formik.touched.IdNumber && formik.errors.IdNumber)}
-                    fullWidth
-                    helperText={formik.touched.IdNumber && formik.errors.IdNumber}
-                    label="ID Number"
-                    name="IdNumber"
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    value={formik.values.IdNumber}
-                  />
-                  <TextField
-                    error={!!(formik.touched.IdDocumentLink && formik.errors.IdDocumentLink)}
-                    fullWidth
-                    helperText={formik.touched.IdDocumentLink && formik.errors.IdDocumentLink}
-                    label="ID Document Link"
-                    name="IdDocumentLink"
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    /* type="file" */
-                    value={formik.values.IdDocumentLink}
-                  />
-                  <TextField
-                    error={!!(formik.touched.gender && formik.errors.gender)}
-                    fullWidth
-                    helperText={formik.touched.gender && formik.errors.gender}
-                    label="Gender"
-                    name="gender"
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    value={formik.values.gender}
-                  />
-                </Stack>
-                {formik.errors.submit && (
-                  <Typography
-                    color="error"
-                    sx={{ mt: 3 }}
-                    variant="body2"
-                  >
-                    {formik.errors.submit}
-                  </Typography>
-                )}
-                <Button
+                />
+                <TextField
+                  error={!!(formik.touched.profilePicture && formik.errors.profilePicture)}
                   fullWidth
-                  size="large"
-                  sx={{ mt: 3 }}
-                  type="submit"
-                  variant="contained"
+                  helperText={formik.touched.profilePicture && formik.errors.profilePicture}
+                  label="Profile Picture"
+                  name="profilePicture"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  /* type="file" */
+                  value={formik.values.profilePicture}
+                />
+                <TextField
+                  error={!!(formik.touched.phoneNumber && formik.errors.phoneNumber)}
+                  fullWidth
+                  helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
+                  label="Phone Number"
+                  name="phoneNumber"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  /* type="tel" */
+                  value={formik.values.phoneNumber}
+                />
+                <TextField
+                  error={!!(formik.touched.email && formik.errors.email)}
+                  fullWidth
+                  helperText={formik.touched.email && formik.errors.email}
+                  label="Email Address"
+                  name="email"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  type="email"
+                  value={formik.values.email}
+                />
+                <TextField
+                  error={!!(formik.touched.password && formik.errors.password)}
+                  fullWidth
+                  helperText={formik.touched.password && formik.errors.password}
+                  label="Password"
+                  name="password"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  type="password"
+                  value={formik.values.password}
+                />
+
+
+
+
+                <TextField
+                  error={!!(formik.touched.locationOrAddress && formik.errors.locationOrAddress)}
+                  fullWidth
+                  helperText={formik.touched.locationOrAddress && formik.errors.locationOrAddress}
+                  label="Location or Address"
+                  name="locationOrAddress"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  value={formik.values.locationOrAddress}
+                />
+                <TextField
+                  error={!!(formik.touched.birthday && formik.errors.birthday)}
+                  fullWidth
+                  helperText={formik.touched.birthday && formik.errors.birthday}
+                  label="Birthday"
+                  name="birthday"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  /* type="date" */
+                  value={formik.values.birthday}
+                />
+                <TextField
+                  error={!!(formik.touched.IdNumber && formik.errors.IdNumber)}
+                  fullWidth
+                  helperText={formik.touched.IdNumber && formik.errors.IdNumber}
+                  label="ID Number"
+                  name="IdNumber"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  value={formik.values.IdNumber}
+                />
+                <TextField
+                  error={!!(formik.touched.IdDocumentLink && formik.errors.IdDocumentLink)}
+                  fullWidth
+                  helperText={formik.touched.IdDocumentLink && formik.errors.IdDocumentLink}
+                  label="ID Document Link"
+                  name="IdDocumentLink"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  /* type="file" */
+                  value={formik.values.IdDocumentLink}
+                />
+
+                <TextField
+                  error={!!(formik.touched.gender && formik.errors.gender)}
+                  fullWidth
+                  helperText={formik.touched.gender && formik.errors.gender}
+                  label="Select Status"
+                  name="status"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  required
+                  select
+                  SelectProps={{ native: false }}
+                  value={formik.values.status}
                 >
-                  Continue
-                </Button>
-              </form>
-            </div>
-          </Box>
+                  {statuses.map((option) => (
+                    <option
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
+
+                <TextField
+                  error={!!(formik.touched.gender && formik.errors.gender)}
+                  fullWidth
+                  helperText={formik.touched.gender && formik.errors.gender}
+                  label="Gender"
+                  name="gender"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  value={formik.values.gender}
+                />
+                <FormControlLabel
+                  error={!!(formik.touched.AcceptTermsAndConditions && formik.errors.AcceptTermsAndConditions)}
+                  fullWidth
+                  helperText={formik.touched.AcceptTermsAndConditions && formik.errors.AcceptTermsAndConditions}
+                  control={
+                    <Checkbox
+                      checked={formik.values.AcceptTermsAndConditions === 'yes'}
+                      onChange={(event) => {
+                        formik.setFieldValue('AcceptTermsAndConditions', event.target.checked ? 'yes' : '');
+                      }}
+                    />
+                  }
+                  label="Accept Terms and Conditions"
+                  name="AcceptTermsAndConditions"
+                />
+
+              </Stack>
+              {formik.errors.submit && (
+                <Typography
+                  color="error"
+                  sx={{ mt: 3 }}
+                  variant="body2"
+                >
+                  {formik.errors.submit}
+                </Typography>
+              )}
+              <Button
+                fullWidth
+                size="large"
+                sx={{ mt: 3 }}
+                type="submit"
+                variant="contained"
+              >
+                Continue
+              </Button>
+            </form>
+          </div>
         </Box>
-      </>
-    );
-  };
-  
-  Page.getLayout = (page) => (
-    <AuthLayout>
-      {page}
-    </AuthLayout>
+      </Box>
+    </>
   );
-  
-  export default Page;
+};
+
+Page.getLayout = (page) => (
+  <AuthLayout>
+    {page}
+  </AuthLayout>
+);
+
+export default Page;
