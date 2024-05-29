@@ -9,8 +9,8 @@ import { Layout as AuthLayout } from 'src/layouts/auth/layout';
 
 const statuses = [
   {
-    value: 'Active',
-    label: 'Active'
+    value: 'Pending',
+    label: 'Pending'
   },
   /* {
     value: 'Active',
