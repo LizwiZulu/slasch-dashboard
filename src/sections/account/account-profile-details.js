@@ -57,7 +57,7 @@ export const AccountProfileDetails = () => {
     })
       .then(response => {
         setUser(response.data.businessOwner);
-        console.log(response.data.businessOwner.profilePicture);
+        
       })
       .catch(error => {
         console.error(error);
