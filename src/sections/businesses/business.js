@@ -7,7 +7,7 @@ import { Grid, TextField, Button, FormControlLabel, Checkbox, Box, Typography, P
 
 const url = 'https://adlinc-api.onrender.com/api/slaschapp/business';
 
-const statuses = [
+/* const statuses = [
   {
     value: 'Active',
     label: 'Active'
@@ -25,7 +25,7 @@ const statuses = [
     label: 'Revoked'
   },
   
-];
+]; */
 const categories = [
   {
     value: 'Fashion And Apparel',
@@ -72,7 +72,7 @@ export const Business = ({ _id }) => {
     BusinessLogo: '',
     verificationDoc: '',
     socials: '',
-    status: '',
+    status: 'Pending',
     BusinessBio: '',
     BusinessType: '',
 
@@ -297,8 +297,19 @@ export const Business = ({ _id }) => {
                 fullWidth
               />
             </Grid>
+            <Grid item xs={12} sm={6} style={{ display: 'none' }}>
+              <TextField
+                required
+                id="status"
+                name="status"
+                label="Status"
+                value={business.status}
+                
+                fullWidth
+              />
+            </Grid>
 
-            <Grid
+            {/* <Grid
               item
               xs={12}
               sm={6}
@@ -322,7 +333,7 @@ export const Business = ({ _id }) => {
                   </option>
                 ))}
               </TextField>
-            </Grid>
+            </Grid> */}
 
             <Grid item xs={12} sm={6}>
               <TextField

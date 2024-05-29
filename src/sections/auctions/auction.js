@@ -7,7 +7,7 @@ import { Grid, TextField, Button, Stack, FormControlLabel, Checkbox, Box, Typogr
 
 const url = 'https://adlinc-api.onrender.com/api/slaschapp/business';
 
-const statuses = [
+/* const statuses = [
   {
     value: 'Active',
     label: 'Active'
@@ -21,7 +21,7 @@ const statuses = [
     label: 'Cancelled'
   },
 
-];
+]; */
 
 export const Auction = ({ _id }) => {
   const token = localStorage.getItem("myToken");
@@ -35,7 +35,7 @@ export const Auction = ({ _id }) => {
     campaignDailyBudget: '',
     campaignStartDate: '',
     interests: '',
-    status: '',
+    status: 'Pending',
 
   });
 
@@ -165,8 +165,19 @@ export const Auction = ({ _id }) => {
                 fullWidth
               />
             </Grid>
+            <Grid item xs={12} sm={6} style={{ display: 'none' }}>
+              <TextField
+                required
+                id="status"
+                name="status"
+                label="Status"
+                value={auction.status}
+                
+                fullWidth
+              />
+            </Grid>
 
-            <Grid
+            {/* <Grid
               item
               xs={12}
               sm={6}
@@ -190,7 +201,7 @@ export const Auction = ({ _id }) => {
                   </option>
                 ))}
               </TextField>
-            </Grid>
+            </Grid> */}
 
 
             <Grid item xs={12}>

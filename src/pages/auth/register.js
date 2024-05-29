@@ -7,12 +7,12 @@ import { Box, Button, Link, Stack, TextField, Typography, Checkbox, FormControlL
 import { useAuth } from 'src/hooks/use-auth';
 import { Layout as AuthLayout } from 'src/layouts/auth/layout';
 
-const statuses = [
+/* const statuses = [
   {
     value: 'Pending',
     label: 'Pending'
   },
-   {
+  {
     value: 'Active',
     label: 'Active'
   },
@@ -24,8 +24,8 @@ const statuses = [
     value: 'Revoked',
     label: 'Revoked'
   },
- 
-];
+
+]; */
 
 const Page = () => {
   const router = useRouter();
@@ -45,7 +45,7 @@ const Page = () => {
       IdNumber: '',
       IdDocumentLink: '',
       gender: '',
-      status: '',
+      status: 'Pending',
       submit: null
     },
     validationSchema: Yup.object({
@@ -121,7 +121,7 @@ const Page = () => {
     }
   });
 
-  /* console.log(formik.values); */
+  console.log(formik.values);
 
   return (
     <>
@@ -295,8 +295,16 @@ const Page = () => {
                   /* type="file" */
                   value={formik.values.IdDocumentLink}
                 />
-
                 <TextField
+                  
+                  label="Status"
+                  name="status"
+                  value={formik.values.status}
+                  style={{ display: 'none' }}
+                  
+                />
+
+                {/* <TextField
                   error={!!(formik.touched.gender && formik.errors.gender)}
                   fullWidth
                   helperText={formik.touched.gender && formik.errors.gender}
@@ -317,7 +325,7 @@ const Page = () => {
                       {option.label}
                     </option>
                   ))}
-                </TextField>
+                </TextField> */}
 
                 <TextField
                   error={!!(formik.touched.gender && formik.errors.gender)}
