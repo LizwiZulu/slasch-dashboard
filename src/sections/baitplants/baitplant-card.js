@@ -6,6 +6,16 @@ import PencilIcon from '@heroicons/react/24/solid/PencilIcon';
 export const BaitplantCard = (props) => {
     const { product } = props;
 
+    const baitId = product._id;
+
+     const handleEditButtonClicked = () => {
+
+        router.push({
+            pathname: '/bait/update-bait',
+            query: { baitId },
+        });
+    }; 
+
     return (
         <Card
             sx={{
@@ -22,19 +32,19 @@ export const BaitplantCard = (props) => {
                         pb: 3
                     }}
                 >
-                    <div style={{borderRadius: '5px', overflow: 'hidden'}}>
-                    <Image
-                        src={product.photos[0]}
-                        alt='Product image 1'
-                        style={{
-                            objectFit: 'cover',
-                        }}
+                    <div style={{ borderRadius: '5px', overflow: 'hidden' }}>
+                        <Image
+                            src={product.photos[0]}
+                            alt='Product image 1'
+                            style={{
+                                objectFit: 'cover',
+                            }}
 
-                        width= '500'
-                        height="250"
-                    />
+                            width='500'
+                            height="200"
+                        />
                     </div>
-                   
+
 
                 </Box>
                 <Typography
@@ -42,7 +52,7 @@ export const BaitplantCard = (props) => {
                     gutterBottom
                     variant="h5"
                 >
-                    {product.name}
+                    {product.baitPlantName}
                 </Typography>
                 <Typography
                     align="left"
@@ -67,7 +77,7 @@ export const BaitplantCard = (props) => {
                     alignItems="center"
                     direction="row"
                     spacing={1}
-                    
+
                 >
                     {/*  <SvgIcon
                         color="action"
@@ -88,9 +98,9 @@ export const BaitplantCard = (props) => {
                     alignItems="center"
                     direction="row"
                     spacing={1}
-                    
+
                 >
-                
+
                     <Typography
                         color="text.secondary"
                         display="inline"
@@ -106,7 +116,7 @@ export const BaitplantCard = (props) => {
                     alignItems="center"
                     direction="row"
                     spacing={1}
-                    
+
                 >
 
                     <div>
@@ -117,6 +127,7 @@ export const BaitplantCard = (props) => {
                                 </SvgIcon>
                             )}
                             variant="contained"
+                        /* onClick={handleEditButtonClicked} */
                         >
                             Edit
                         </Button>

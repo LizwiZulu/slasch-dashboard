@@ -137,7 +137,7 @@ export const Business = ({ _id }) => {
       router.push('/business')
 
     } else {
-      axios.patch(`${url}/${_id}`, business, {
+      axios.patch(`${url}/update/${_id}`, business, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,

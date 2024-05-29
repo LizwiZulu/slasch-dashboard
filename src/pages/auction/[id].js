@@ -7,20 +7,21 @@ import {
   Grid,
   CircularProgress,
   Avatar,
-  Card,
+  Card, SvgIcon,
   Pagination,
   Table,
   TableBody,
   TableCell,
   TableContainer, TableHead,
-  TableRow
+  TableRow,
+  Button
 } from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { BaitplantCard } from 'src/sections/baitplants/baitplant-card';
-import { useLocation } from 'react-router-dom';
+import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 
 
 const url = 'https://adlinc-api.onrender.com/api/slaschapp/';
@@ -84,6 +85,14 @@ const Page = () => {
 
   const handlePageChange = (event, value) => {
     setPage(value);
+  };
+
+  const handleAddButtonClicked = () => {
+   
+    router.push({
+      pathname: '/bait/new-bait',
+      query: { auctionId },
+    });
   };
 
   return (
@@ -154,8 +163,15 @@ const Page = () => {
 
               </Card>
             )}
-
-            <Typography variant="h5">All Auction Bait Plants</Typography>
+            <Stack direction="row" justifyContent="space-between" spacing={4}>
+              <Typography variant="h5">Bait plants</Typography>
+              <div>
+                <Button variant="contained" startIcon={<SvgIcon fontSize="small"><PlusIcon /></SvgIcon>}  onClick={handleAddButtonClicked} >
+                  New bait
+                </Button>
+              </div>
+            </Stack>
+            
             {baits && (
               <Grid container spacing={3}>
                 {baits.map((product) => (
