@@ -16,7 +16,7 @@ export const BusinessCard = ({
   BusinessCategory,
   BusinessLocation,
   _id,
-  BusinessHours
+  BusinessLogo
 }) => {
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
@@ -55,7 +55,7 @@ export const BusinessCard = ({
           }}
         >
           <Avatar
-            src={BusinessHours}
+            src={BusinessLogo}
             variant="square"
             sx={{ width: 75, height: 75 }}
           />
@@ -122,6 +122,6 @@ BusinessCard.propTypes = {
   BusinessName: PropTypes.string.isRequired,
   BusinessCategory: PropTypes.string.isRequired,
   BusinessLocation: PropTypes.string.isRequired,
-  BusinessHours: PropTypes.string.isRequired,
+  BusinessLogo: PropTypes.string.isRequired,
   _id: PropTypes.string.isRequired
 };

@@ -114,7 +114,7 @@ const Page = () => {
 
                 <Grid xs={12} md={6} lg={4}>
                   <Avatar
-                    src={business?.BusinessHours}
+                    src={business?.BusinessLogo}
                     variant="rounded"
                     sx={{ width: 275, height: 275 }}
                   />

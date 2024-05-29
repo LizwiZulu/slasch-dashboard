@@ -136,7 +136,7 @@ const Page = () => {
                         BusinessName={business.BusinessName}
                         BusinessCategory={business.BusinessCategory}
                         BusinessLocation={business.BusinessLocation}
-                        BusinessHours={business.BusinessHours}
+                        BusinessLogo={business.BusinessLogo}
                         _id={business._id}
                       />
                     </Grid>

@@ -250,7 +250,7 @@ export const Business = ({ _id }) => {
                 onChange={(event) => setBusiness({ ...business, BusinessCategory: event.target.value })}
                 required
                 select
-                SelectProps={{ native: false }}
+                SelectProps={{ native: true }}
                 value={business.BusinessCategory}
               >
                 {categories.map((option) => (
@@ -310,7 +310,7 @@ export const Business = ({ _id }) => {
                 onChange={(event) => setBusiness({ ...business, status: event.target.value })}
                 required
                 select
-                SelectProps={{ native: false }}
+                SelectProps={{ native: true }}
                 value={business.status}
               >
                 {statuses.map((option) => (

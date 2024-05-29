@@ -12,7 +12,7 @@ const statuses = [
     value: 'Pending',
     label: 'Pending'
   },
-  /* {
+   {
     value: 'Active',
     label: 'Active'
   },
@@ -24,7 +24,7 @@ const statuses = [
     value: 'Revoked',
     label: 'Revoked'
   },
- */
+ 
 ];
 
 const Page = () => {
@@ -306,7 +306,7 @@ const Page = () => {
                   onChange={formik.handleChange}
                   required
                   select
-                  SelectProps={{ native: false }}
+                  SelectProps={{ native: true }}
                   value={formik.values.status}
                 >
                   {statuses.map((option) => (

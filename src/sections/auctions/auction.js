@@ -178,7 +178,7 @@ export const Auction = ({ _id }) => {
                 onChange={(event) => setAuction({ ...auction, status: event.target.value })}
                 required
                 select
-                SelectProps={{ native: false }}
+                SelectProps={{ native: true }}
                 value={auction.status}
               >
                 {statuses.map((option) => (
