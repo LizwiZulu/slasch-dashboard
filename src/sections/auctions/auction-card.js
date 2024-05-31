@@ -25,20 +25,16 @@ export const AuctionCard = ({
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
 
-  /* const handleEditButtonClicked = () => {
-    
-  }; */
-
   const handleEditButtonClicked = () => {
 
     router.push({
-        pathname: `/auction/edit-auction`,
-        query: { _id ,businessId },
+      pathname: `/auction/edit-auction`,
+      query: { _id, businessId },
     });
-}; 
+  };
 
   const handleViewButtonClicked = () => {
-   
+
     router.push({
       pathname: `/auction/${_id}`,
       query: { businessId },
@@ -119,18 +115,16 @@ export const AuctionCard = ({
               variant="body2"> {campaignDailyBudget}  </Typography>
           </Typography>
         </Stack>
+
         <Stack
           alignItems="center"
           direction="row"
           spacing={1}
         >
-           
-            <div>
-              <Button variant="contained" startIcon={<SvgIcon fontSize="small"><PencilIcon /></SvgIcon>} onClick={handleEditButtonClicked} >
-                Edit
-              </Button>
-            </div>
-           
+
+          {/* <Button variant="contained" startIcon={<SvgIcon fontSize="small"><PencilIcon /></SvgIcon>} onClick={handleEditButtonClicked} >
+            Edit
+          </Button> */}
 
           <Button variant="contained" startIcon={<SvgIcon fontSize="small"><EyeIcon /></SvgIcon>} onClick={handleViewButtonClicked}>
             View

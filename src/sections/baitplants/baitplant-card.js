@@ -119,7 +119,7 @@ export const BaitplantCard = (props) => {
 
                 >
 
-                    <div>
+                    {/* <div>
                         <Button
                             startIcon={(
                                 <SvgIcon fontSize="small">
@@ -127,11 +127,11 @@ export const BaitplantCard = (props) => {
                                 </SvgIcon>
                             )}
                             variant="contained"
-                        /* onClick={handleEditButtonClicked} */
+                         onClick={handleEditButtonClicked} 
                         >
                             Edit
                         </Button>
-                    </div>
+                    </div> */}
 
                 </Stack>
             </Stack>

@@ -165,11 +165,11 @@ const Page = () => {
             )}
             <Stack direction="row" justifyContent="space-between" spacing={4}>
               <Typography variant="h5">Bait plants</Typography>
-              <div>
+              {/* <div>
                 <Button variant="contained" startIcon={<SvgIcon fontSize="small"><PlusIcon /></SvgIcon>}  onClick={handleAddButtonClicked} >
                   New bait
                 </Button>
-              </div>
+              </div> */}
             </Stack>
             
             {baits && (

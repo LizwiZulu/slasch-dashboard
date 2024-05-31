@@ -110,13 +110,13 @@ const Page = () => {
                 </Stack> */}
               </Stack>
 
-              {localStorage.getItem("userEmail") != "admin@adlinc.com" && (
+              {/* {localStorage.getItem("userEmail") != "admin@adlinc.com" && (
               <div>
                 <Button variant="contained" startIcon={<SvgIcon fontSize="small"><PlusIcon /></SvgIcon>} onClick={handleAddButtonClicked}>
                   Add
                 </Button>
               </div>
-              )}
+              )} */}
             </Stack>
             {/* <BusinessesSearch /> */}
             {isLoading && (
