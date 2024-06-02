@@ -1,4 +1,5 @@
 import ChartBarIcon from '@heroicons/react/24/solid/ChartBarIcon';
+import CheckCircleIcon  from '@heroicons/react/24/solid/CheckCircleIcon';
 import CogIcon from '@heroicons/react/24/solid/CogIcon';
 import LockClosedIcon from '@heroicons/react/24/solid/LockClosedIcon';
 import ArchiveBoxArrowDownIcon from '@heroicons/react/24/solid/ArchiveBoxArrowDownIcon';
@@ -50,6 +51,15 @@ export const items = [
       </SvgIcon>
     )
   }, */
+  {
+    title: 'Verification',
+    path: '/verification',
+    icon: (
+      <SvgIcon fontSize="small">
+        <CheckCircleIcon />
+      </SvgIcon>
+    )
+  },
   {
     title: 'Auctions',
     path: '/auctions',
