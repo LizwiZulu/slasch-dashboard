@@ -1,24 +1,27 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Typography,
   Grid,
   Card,
   CardContent,
+  CardActions,
   List,
   ListItem,
   ListItemText,
+  ListItemSecondaryAction,
   Divider,
+  MenuItem,
+  Select,
   Button,
   Modal,
-  Chip,
-  CardActions,
 } from '@mui/material';
 
-const CompanyDetails = ({data}) => {
+const CustomerDetails = ({data}) => {
 
   const [openModal, setOpenModal] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState(null);
+
 
   const handleOpenModal = (document) => {
     setSelectedDocument(document);
@@ -34,16 +37,16 @@ const CompanyDetails = ({data}) => {
     <Box p={3}>
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <Box display="flex" bgcolor={'white'} borderRadius={'10px'} justifyContent="space-between" alignItems="center">
-              <CardContent>
-                <Typography variant="h4" gutterBottom>
-                  {data.name}
-                </Typography>
-                <Typography variant="body1">{data.description}</Typography>
-                <Chip label={data?.category} variant="outlined" sx={{mt: 2}} />
-                <Typography variant='body2' sx={{mt: 1, ml: 1}}>{data?.created_at}</Typography>
-              </CardContent>
-              <CardActions>
+        <Box display="flex" bgcolor={'white'} borderRadius={'10px'} justifyContent="space-between" alignItems="center">
+            <CardContent>
+              <Typography variant="h4" gutterBottom>
+                {data?.name}
+              </Typography>
+              <Typography variant="body1">{data?.email}</Typography>
+              <Typography variant="body1" sx={{mt: 1}}>{data?.address}</Typography>
+              <Typography variant='body2' sx={{mt: 1}}>{data?.created_at}</Typography>
+            </CardContent>
+            <CardActions>
                 <Button
                   variant="contained"
                   color={'success'}
@@ -58,31 +61,9 @@ const CompanyDetails = ({data}) => {
                   Decline
                 </Button>
               </CardActions>
-            </Box>
+          </Box>
         </Grid>
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Shareholders
-              </Typography>
-              <List>
-                {data?.shareholders?.map((shareholder, index) => (
-                  <React.Fragment key={index}>
-                    <ListItem>
-                      <ListItemText
-                        primary={shareholder?.name}
-                        secondary={shareholder?.email || '--'}
-                      />
-                    </ListItem>
-                    {index !== data.shareholders.length - 1 && <Divider />}
-                  </React.Fragment>
-                ))}
-              </List>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12}>
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
@@ -92,13 +73,15 @@ const CompanyDetails = ({data}) => {
                 {data.documents.map((document, index) => (
                   <ListItem key={index}>
                     <ListItemText primary={document.name} />
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => handleOpenModal(document)}
-                    >
-                      View
-                    </Button>
+                    <ListItemSecondaryAction>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => handleOpenModal(document)}
+                      >
+                        View
+                      </Button>
+                    </ListItemSecondaryAction>
                   </ListItem>
                 ))}
               </List>
@@ -123,7 +106,7 @@ const CompanyDetails = ({data}) => {
             backgroundColor: 'white',
             boxShadow: 24,
             padding: '16px',
-          
+            borderRadius: '12px'
           }}
         >
           <iframe
@@ -143,4 +126,4 @@ const CompanyDetails = ({data}) => {
   );
 };
 
-export default CompanyDetails;
+export default CustomerDetails;

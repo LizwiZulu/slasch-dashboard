@@ -53,7 +53,7 @@ export const items = [
   }, */
   {
     title: 'Verification',
-    path: '/verification',
+    path: '/verification/business',
     icon: (
       <SvgIcon fontSize="small">
         <CheckCircleIcon />
