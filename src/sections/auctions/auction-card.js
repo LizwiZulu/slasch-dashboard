@@ -124,7 +124,7 @@ export const AuctionCard = ({
 
           {/* <Button variant="contained" startIcon={<SvgIcon fontSize="small"><PencilIcon /></SvgIcon>} onClick={handleEditButtonClicked} >
             Edit
-          </Button> */}
+          </Button>  */}
 
           <Button variant="contained" startIcon={<SvgIcon fontSize="small"><EyeIcon /></SvgIcon>} onClick={handleViewButtonClicked}>
             View

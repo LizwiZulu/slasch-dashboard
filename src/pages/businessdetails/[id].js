@@ -161,14 +161,14 @@ const Page = () => {
             </Card>
 
 
-            <Stack direction="row" justifyContent="space-between" spacing={4}>
+            {/* <Stack direction="row" justifyContent="space-between" spacing={4}>
               <Typography variant="h5">Business Auctions</Typography>
-              {/* <div>
+               <div>
                 <Button variant="contained" startIcon={<SvgIcon fontSize="small"><PlusIcon /></SvgIcon>} onClick={handleAddButtonClicked}>
                   New Auction
                 </Button>
-              </div> */}
-            </Stack>
+              </div> 
+            </Stack> */}
 
             {auctions.length > 0 && (
               <>

@@ -85,7 +85,7 @@ export const BusinessCard = ({
 
       >
 
-        {/* {localStorage.getItem("userEmail") != "admin@adlinc.com" && (
+        {/*  {localStorage.getItem("userEmail") != "admin@adlinc.com" && (
 
           <Stack
 
@@ -96,8 +96,8 @@ export const BusinessCard = ({
 
 
           </Stack>
-        )} */}
-
+        )} 
+ */}
         <Button variant="contained" startIcon={<SvgIcon fontSize="small"><EyeIcon /></SvgIcon>} onClick={handleViewButtonClicked}>
           View Business
         </Button>

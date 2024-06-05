@@ -77,14 +77,14 @@ const Page = () => {
         >
           <div> 
              {/* REGISTER CODE STARTS HERE  */}
-             <Stack
+             {/* <Stack
               spacing={1}
               sx={{ mb: 3 }}
             >
               <Typography variant="h4">
                 Login
               </Typography>
-              {/* <Typography
+               <Typography
                 color="text.secondary"
                 variant="body2"
               >
@@ -99,8 +99,8 @@ const Page = () => {
                 >
                   Register
                 </Link>
-              </Typography> */}
-            </Stack> 
+              </Typography> 
+            </Stack>  */}
           
             {method === 'email' && (
               <form

@@ -112,14 +112,14 @@ export const BaitplantCard = (props) => {
 
                 </Stack>
 
-                <Stack
+                {/* <Stack
                     alignItems="center"
                     direction="row"
                     spacing={1}
 
                 >
 
-                    {/* <div>
+                     <div>
                         <Button
                             startIcon={(
                                 <SvgIcon fontSize="small">
@@ -131,9 +131,9 @@ export const BaitplantCard = (props) => {
                         >
                             Edit
                         </Button>
-                    </div> */}
+                    </div> 
 
-                </Stack>
+                </Stack> */}
             </Stack>
         </Card>
     );
