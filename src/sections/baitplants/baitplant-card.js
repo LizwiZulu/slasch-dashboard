@@ -112,7 +112,7 @@ export const BaitplantCard = (props) => {
 
                 </Stack>
 
-                {/* <Stack
+                 <Stack
                     alignItems="center"
                     direction="row"
                     spacing={1}
@@ -133,7 +133,7 @@ export const BaitplantCard = (props) => {
                         </Button>
                     </div> 
 
-                </Stack> */}
+                </Stack> 
             </Stack>
         </Card>
     );

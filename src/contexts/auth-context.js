@@ -163,13 +163,13 @@ export const AuthProvider = (props) => {
     });
   };
 
-  const signUp = async (firstname, secondname, surname, profilePicture, phoneNumber, email, password, AcceptTermsAndConditions, locationOrAddress, birthday, IdNumber, IdDocumentLink, gender, status) => {
+  const signUp = async (firstname, secondname, surname, profilePictureUrl, phoneNumber, email, password, AcceptTermsAndConditions, locationOrAddress, birthday, IdNumber, IdDocumentUrl, gender, status) => {
     try {
       const userData = {
         firstname: firstname,
         secondname: secondname,
         surname: surname,
-        profilePicture: profilePicture,
+        profilePicture: profilePictureUrl,
         phoneNumber: phoneNumber,
         email: email,
         password: password,
@@ -177,7 +177,7 @@ export const AuthProvider = (props) => {
         locationOrAddress: locationOrAddress,
         birthday: birthday,
         IdNumber: IdNumber,
-        IdDocumentLink: IdDocumentLink,
+        IdDocumentLink: IdDocumentUrl,
         gender: gender,
         status: status,
       };

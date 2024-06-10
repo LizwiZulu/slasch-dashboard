@@ -3,29 +3,35 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { Box, Button, Link, Stack, TextField, Typography, Checkbox, FormControlLabel, } from '@mui/material';
+import { Box, Button, Link, Stack, TextField, Typography, Checkbox, FormControlLabel } from '@mui/material';
 import { useAuth } from 'src/hooks/use-auth';
 import { Layout as AuthLayout } from 'src/layouts/auth/layout';
 
-/* const statuses = [
-  {
-    value: 'Pending',
-    label: 'Pending'
-  },
-  {
-    value: 'Active',
-    label: 'Active'
-  },
-  {
-    value: 'Suspended',
-    label: 'Suspended'
-  },
-  {
-    value: 'Revoked',
-    label: 'Revoked'
-  },
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/storage';
 
-]; */
+let app;
+
+// Check if the app is already initialized
+if (!firebase.apps.length) {
+  app = firebase.initializeApp({
+    apiKey: "AIzaSyANBLmOODXkoglo2c77Zri8ErkiN0k8KBY",
+    authDomain: "adlinc-community-e391a.firebaseapp.com",
+    projectId: "adlinc-community-e391a",
+    storageBucket: "adlinc-community-e391a.appspot.com",
+    messagingSenderId: "871894259823",
+    appId: "1:871894259823:web:250e5ee5a13f8afa0dd59a",
+    measurementId: "G-5VHG5PB2XD"
+
+  });
+} else {
+  app = firebase.app();
+}
+
+const storage = firebase.storage();
+const auth = firebase.auth();
+
 
 const Page = () => {
   const router = useRouter();
@@ -49,69 +55,49 @@ const Page = () => {
       submit: null
     },
     validationSchema: Yup.object({
-      firstname: Yup
-        .string()
-        .max(255)
-        .required('First Name is required'),
-      secondname: Yup
-        .string()
-        .max(255)
-        .required('Second Name is required'),
-      surname: Yup
-        .string()
-        .max(255)
-        .required('Surname is required'),
-      profilePicture: Yup
-        .string()
-        .max(255)
-        .required('picture is required'),
-      phoneNumber: Yup
-        .string()
-        .max(255)
-        .required('Phone Number is required'),
-      email: Yup
-        .string()
-        .max(255)
-        .required('Email is required'),
-      password: Yup
-        .string()
-        .max(255)
-        .required('Password is required'),
-      /* AcceptTermsAndConditions: Yup
-      .string()
-      .max(255)
-      .required('First Name is required'), */
-      AcceptTermsAndConditions: Yup
-        .string()
-        .required('Accept Terms and Conditions is required'),
-      locationOrAddress: Yup
-        .string()
-        .max(255)
-        .required('Location or Address is required'),
-      birthday: Yup
-        .string()
-        .max(255)
-        .required('First Name is required'),
-      IdNumber: Yup
-        .string()
-        .max(255)
-        .required('First Name is required'),
-      IdDocumentLink: Yup
-        .string()
-        .max(255)
-        .required('First Name is required'),
-      gender: Yup
-        .string()
-        .max(255)
-        .required('First Name is required'),
-      status: Yup
-        .string()
-        .max(255)
-        .required('Status is required'),
+      firstname: Yup.string().max(255).required('First Name is required'),
+      secondname: Yup.string().max(255).required('Second Name is required'),
+      surname: Yup.string().max(255).required('Surname is required'),
+      profilePicture: Yup.string().max(255).required('Picture is required'),
+      phoneNumber: Yup.string().max(255).required('Phone Number is required'),
+      email: Yup.string().max(255).required('Email is required'),
+      password: Yup.string().max(255).required('Password is required'),
+      AcceptTermsAndConditions: Yup.string().required('Accept Terms and Conditions is required'),
+      locationOrAddress: Yup.string().max(255).required('Location or Address is required'),
+      birthday: Yup.string().max(255).required('Birthday is required'),
+      IdNumber: Yup.string().max(255).required('Id Number is required'),
+      IdDocumentLink: Yup.string().max(255).required('Id Document is required'),
+      gender: Yup.string().max(255).required('Gender is required'),
+      status: Yup.string().max(255).required('Status is required')
     }),
     onSubmit: async (values, helpers) => {
       try {
-        await auth.signUp(values.firstname, values.secondname, values.surname, values.profilePicture, values.phoneNumber, values.email, values.password, values.AcceptTermsAndConditions, values.locationOrAddress, values.birthday, values.IdNumber, values.IdDocumentLink, values.gender, values.status);
+        const profilePictureFile = values.profilePicture;
+        const idDocumentFile = values.IdDocumentLink;
+
+        const profilePictureSnapshot = await storage.ref('images/' + profilePictureFile.name).put(profilePictureFile);
+        const idDocumentSnapshot = await storage.ref('documents/' + idDocumentFile.name).put(idDocumentFile);
+
+        const profilePictureUrl = await profilePictureSnapshot.ref.getDownloadURL();
+        const IdDocumentUrl = await idDocumentSnapshot.ref.getDownloadURL();
+
+        await auth.signUp(
+          values.firstname,
+          values.secondname,
+          values.surname,
+          profilePictureUrl,
+          values.phoneNumber,
+          values.email,
+          values.password,
+          values.AcceptTermsAndConditions,
+          values.locationOrAddress,
+          values.birthday,
+          values.IdNumber,
+          IdDocumentUrl,
+          values.gender,
+          values.status
+        );
+
         router.push('/');
       } catch (err) {
         helpers.setStatus({ success: false });
@@ -126,9 +112,7 @@ const Page = () => {
   return (
     <>
       <Head>
-        <title>
-          Register
-        </title>
+        <title>Register</title>
       </Head>
       <Box
         sx={{
@@ -147,33 +131,16 @@ const Page = () => {
           }}
         >
           <div>
-            <Stack
-              spacing={1}
-              sx={{ mb: 3 }}
-            >
-              <Typography variant="h4">
-                Register
-              </Typography>
-              <Typography
-                color="text.secondary"
-                variant="body2"
-              >
-                Already have an account?
-                &nbsp;
-                <Link
-                  component={NextLink}
-                  href="/auth/login"
-                  underline="hover"
-                  variant="subtitle2"
-                >
+            <Stack spacing={1} sx={{ mb: 3 }}>
+              <Typography variant="h4">Register</Typography>
+              <Typography color="text.secondary" variant="body2">
+                Already have an account?&nbsp;
+                <Link component={NextLink} href="/auth/login" underline="hover" variant="subtitle2">
                   Log in
                 </Link>
               </Typography>
             </Stack>
-            <form
-              noValidate
-              onSubmit={formik.handleSubmit}
-            >
+            <form noValidate onSubmit={formik.handleSubmit}>
               <Stack spacing={3}>
                 <TextField
                   error={!!(formik.touched.firstname && formik.errors.firstname)}
@@ -212,9 +179,10 @@ const Page = () => {
                   label="Profile Picture"
                   name="profilePicture"
                   onBlur={formik.handleBlur}
-                  onChange={formik.handleChange}
-                  /* type="file" */
-                  value={formik.values.profilePicture}
+                  onChange={(event) => {
+                    formik.setFieldValue('profilePicture', event.target.files[0]);
+                  }}
+                  type="file"
                 />
                 <TextField
                   error={!!(formik.touched.phoneNumber && formik.errors.phoneNumber)}
@@ -224,7 +192,7 @@ const Page = () => {
                   name="phoneNumber"
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
-                  /* type="tel" */
+                  type="tel"
                   value={formik.values.phoneNumber}
                 />
                 <TextField
@@ -249,10 +217,6 @@ const Page = () => {
                   type="password"
                   value={formik.values.password}
                 />
-
-
-
-
                 <TextField
                   error={!!(formik.touched.locationOrAddress && formik.errors.locationOrAddress)}
                   fullWidth
@@ -271,7 +235,7 @@ const Page = () => {
                   name="birthday"
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
-                  /* type="date" */
+                  type="date"
                   value={formik.values.birthday}
                 />
                 <TextField
@@ -291,42 +255,17 @@ const Page = () => {
                   label="ID Document Link"
                   name="IdDocumentLink"
                   onBlur={formik.handleBlur}
-                  onChange={formik.handleChange}
-                  /* type="file" */
-                  value={formik.values.IdDocumentLink}
+                  onChange={(event) => {
+                    formik.setFieldValue('IdDocumentLink', event.target.files[0]);
+                  }}
+                  type="file"
                 />
                 <TextField
-                  
                   label="Status"
                   name="status"
                   value={formik.values.status}
                   style={{ display: 'none' }}
-                  
                 />
-
-                {/* <TextField
-                  error={!!(formik.touched.gender && formik.errors.gender)}
-                  fullWidth
-                  helperText={formik.touched.gender && formik.errors.gender}
-                  label="Select Status"
-                  name="status"
-                  onBlur={formik.handleBlur}
-                  onChange={formik.handleChange}
-                  required
-                  select
-                  SelectProps={{ native: true }}
-                  value={formik.values.status}
-                >
-                  {statuses.map((option) => (
-                    <option
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField> */}
-
                 <TextField
                   error={!!(formik.touched.gender && formik.errors.gender)}
                   fullWidth
@@ -352,7 +291,6 @@ const Page = () => {
                   label="Accept Terms and Conditions"
                   name="AcceptTermsAndConditions"
                 />
-
               </Stack>
               {formik.errors.submit && (
                 <Typography
