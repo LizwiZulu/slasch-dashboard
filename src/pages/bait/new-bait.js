@@ -1,16 +1,11 @@
-import React from 'react';
 import Head from 'next/head';
-import {
-  Box, Container, Stack, Typography, Grid, CircularProgress, Avatar, Card, Table,
-  TableBody, TextField,
-  TableCell, SvgIcon,
-  TableContainer, TableHead,
-  TableRow, Button, Modal
-} from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, Container, Stack, Typography, Grid, Card, Button, Modal, TextField, InputLabel,} from '@mui/material';
+import LinearProgress from '@mui/material/LinearProgress';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { app, auth, storage } from 'src/firebase/config';
 
 const url = 'https://adlinc-api.onrender.com/api/slaschapp/business/auction';
 const Availability = [
@@ -39,17 +34,64 @@ const Page = () => {
     color: '',
     size: '',
     status: 'Pending',
-    photos: [''],
+    photos: [],
   });
 
   const [photoInputs, setPhotoInputs] = useState([{
-    value: '',
+    value: null,
   }]);
+
+  const [photosUploaded, setPhotosUploaded] = useState(false);
+
+  const [progress, setProgress] = useState(0);
+
+  const [uploading, setUploading] = useState(false);
+
+  useEffect(() => {
+    const uploadPhotos = async () => {
+      setUploading(true);
+      const promises = photoInputs.map((input) => handleUploadPhoto(input.value));
+      await Promise.all(promises);
+      setPhotosUploaded(true);
+      setUploading(false);
+    };
+    uploadPhotos();
+  }, [photoInputs]);
+
+  const handleUploadPhoto = (file) => {
+    if (!file) {
+      console.error('No file provided');
+      return;
+    }
+    const storageRef = storage.ref(`baitPhotos/${file.name}`);
+    const uploadTask = storageRef.put(file);
+    return uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setProgress(progress);
+      },
+      (error) => {
+        console.error(error);
+      },
+      () => {
+        uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+          const newPhotos = [...bait.photos];
+          newPhotos.push(downloadURL);
+          setBait((prevBait) => ({ ...prevBait, photos: newPhotos }));
+        });
+      }
+    );
+  };
+
+  const handleUpdatePhotos = () => {
+    const newPhotos = photoInputs.map((input) => input.value);
+    setBait((prevBait) => ({ ...prevBait, photos: newPhotos }));
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     handleUpdatePhotos();
-    console.log('Submitting bait:', bait);
     axios.post(`${url}/${auctionId}/bait/create`, bait, {
       headers: {
         'Content-Type': 'application/json',
@@ -58,43 +100,30 @@ const Page = () => {
     })
       .then((response) => {
         console.log('Bait created successfully!');
-
         router.push(`/auction/${auctionId}`);
       })
       .catch((error) => {
         console.error('Error creating business:', error);
       });
-
-    router.push(`/auction/${auctionId}`);
   };
 
   const handleAddPhotoInput = () => {
-    setPhotoInputs([...photoInputs, { value: '' }]);
+    setPhotoInputs((prevInputs) => [...prevInputs, { value: null }]);
   };
 
   const handleRemovePhotoInput = (index) => {
-    setPhotoInputs(photoInputs.filter((input, i) => i !== index));
+    setPhotoInputs((prevInputs) => prevInputs.filter((input, i) => i !== index));
   };
 
-  const handlePhotoInputChange = (index, value) => {
-    const newPhotoInputs = [...photoInputs];
-    newPhotoInputs[index].value = value;
-    setPhotoInputs(newPhotoInputs);
+  const handlePhotoInputChange = (index, event) => {
+    const file = event.target.files[0];
+    setPhotoInputs((prevInputs) => {
+      const newInputs = [...prevInputs];
+      newInputs[index].value = file;
+      return newInputs;
+    });
   };
-
-  const handleUpdatePhotos = () => {
-    const newPhotos = photoInputs.map((input) => input.value);
-    console.log('Updating photos:', newPhotos);
-    setBait((prevBait) => ({ ...prevBait, photos: newPhotos }));
-  };
-
-  useEffect(() => {
-    const newPhotos = photoInputs.map((input) => input.value);
-    setBait((prevBait) => ({ ...prevBait, photos: newPhotos }));
-  }, [photoInputs]);
-
-  ///console.log("Received auction Id", auctionId);
-  ///console.log(bait);
+  
 
   return (
     <>
@@ -232,14 +261,13 @@ const Page = () => {
 
                   {photoInputs.map((input, index) => (
                     <Grid item xs={12} sm={6} key={index}>
-                      <TextField
-                        required
+                      <InputLabel>Photo {index + 1}</InputLabel>
+                      <input
+                        type="file"
                         id={`photo-${index}`}
                         name={`photo-${index}`}
-                        label="Photo"
-                        value={input.value}
-                        onChange={(event) => handlePhotoInputChange(index, event.target.value)}
-                        fullWidth
+                        onChange={(event) => handlePhotoInputChange(index, event)}
+                        required
                       />
                       <Button onClick={() => handleRemovePhotoInput(index)}>Remove</Button>
                     </Grid>
@@ -248,6 +276,12 @@ const Page = () => {
                   <Grid item xs={12} sm={6}>
                     <Button onClick={handleAddPhotoInput}>Add Photo</Button>
                   </Grid>
+
+                  {uploading && (
+                    <Grid item xs={12}>
+                      <LinearProgress />
+                    </Grid>
+                  )}
 
                   <Grid item xs={12}>
                     <Button type="submit" variant="contained" color="primary" fullWidth>

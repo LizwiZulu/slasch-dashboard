@@ -104,7 +104,7 @@ const Page = () => {
           <Stack spacing={3}>  {/* spacing={3} */}
             <Stack direction="row" justifyContent="space-between" spacing={4}>   {/* spacing={4} */}
               <Stack spacing={1}>
-                <Typography variant="h4">{localStorage.getItem("userEmail") != "admin@adlinc.com"? "My" : "All"} Businesses</Typography>
+                <Typography variant="h5">{localStorage.getItem("userEmail") != "admin@adlinc.com"? "My" : "All"} Businesses</Typography>
               </Stack>
 
                 {localStorage.getItem("userEmail") != "admin@adlinc.com" && (

@@ -1,7 +1,7 @@
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ['media.istockphoto.com', 'images.pexels.com'],
+    domains: ['media.istockphoto.com', 'images.pexels.com', 'firebasestorage.googleapis.com'],
   },
 /* 
   experimental: {
