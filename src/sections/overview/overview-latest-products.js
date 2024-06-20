@@ -20,6 +20,30 @@ import {
 export const OverviewLatestProducts = (props) => {
   const { products = [], sx } = props;
 
+ /*  const [products, setOrders] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+
+  useEffect(() => {
+    const token = localStorage.getItem("myToken");
+    axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(response => {
+        setOrders(response.data.orders);
+        setLoading(false);
+
+        console.log("Returned orders:", response.data)
+      })
+      .catch(error => {
+        setError(error);
+        setLoading(false);
+      });
+  }, []); */
+
   return (
     <Card sx={sx}>
       <CardHeader title="Latest Baits" />

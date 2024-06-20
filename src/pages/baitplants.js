@@ -71,7 +71,7 @@ const Page = () => {
               </Stack> 
               {localStorage.getItem("userEmail") != "admin@adlinc.com" && (
               <div>
-                <Button variant="contained" startIcon={<SvgIcon fontSize="small"><PlusIcon /></SvgIcon>} onClick={handleAddButtonClicked}>
+                <Button variant="contained" startIcon={<SvgIcon fontSize="small"><PlusIcon /></SvgIcon>} /* onClick={handleAddButtonClicked} */>
                   Add
                 </Button>
               </div>
