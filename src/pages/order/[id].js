@@ -45,17 +45,17 @@ const Page = () => {
     const token = localStorage.getItem("myToken");
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${url}${orderId}`, {
+        const response = await axios.get(`${url}orders/${orderId}`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
           },
         });
-        setOrder(response.data.cart);
+        setOrder(response.data.orders);
         setStatus(response.data.status);
         setLoading(false);
 
-        console.log(response.data)
+        console.log("Fetched Data:", response)
       } catch (error) {
         setError(error);
         console.log(error);
@@ -91,7 +91,7 @@ const Page = () => {
               <>
                 <Stack spacing={2}>
                   <Typography variant="h5">Order Details</Typography>
-                  <Card>
+                   <Card>
                     <CardContent>
                       <TableContainer>
                         <Table>
@@ -134,7 +134,7 @@ const Page = () => {
                         </Table>
                       </TableContainer>
                     </CardContent>
-                  </Card>
+                  </Card> 
                 </Stack>
                 <Grid item xs={12} sm={6} md={4} lg={3}>
                   <Card>
@@ -150,7 +150,7 @@ const Page = () => {
                               <TableCell>Price</TableCell>
                             </TableRow>
                           </TableHead>
-                          <TableBody>
+                           <TableBody>
                             {order.baits.map((bait, index) => (
                               <TableRow key={bait._id}>
                                 <TableCell>{index + 1}</TableCell>
@@ -159,7 +159,7 @@ const Page = () => {
                                 <TableCell>{bait.price}</TableCell>
                               </TableRow>
                             ))}
-                          </TableBody>
+                          </TableBody> 
                         </Table>
                       </TableContainer>
                     </CardContent>
