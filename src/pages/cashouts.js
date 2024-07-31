@@ -27,7 +27,7 @@ import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { PlusIcon } from '@heroicons/react/24/solid';
 
 
-const aurl = 'https://adlinc-api.onrender.com/api/slaschapp/admin/businesses';
+const aurl = 'https://adlinc-api.onrender.com/api/slaschapp/admin/cash-out/requests';
 
 const Page = () => {
   const [businesses, setBusinesses] = useState([]);
@@ -51,9 +51,9 @@ const Page = () => {
         },
       })
         .then((response) => {
-          setBusinesses(response.data.businesses);
+          setBusinesses(response.data.cash_out);
           setTotalPages(Math.ceil(response.data.total / itemsPerPage));
-          console.log("Fetched business:", response.data.businesses);
+          console.log("Fetched business:", response.data);
         })
         .catch((error) => {
           setError(error);
@@ -77,7 +77,7 @@ const Page = () => {
   return (
     <>
       <Head>
-        <title>Businesses</title>
+        <title>Cash Outs</title>
       </Head>
       <Box component="main" sx={{ flexGrow: 1, py: 3 }}>
         <Container maxWidth="xl">
@@ -87,7 +87,7 @@ const Page = () => {
 
             <TabContext value={currentTab}>
 
-              <Typography variant="h5">All Businesses</Typography>
+              <Typography variant="h5">All Cash out Requests</Typography>
 
               <Card container sx={{
                   flexGrow: 1,
@@ -100,8 +100,8 @@ const Page = () => {
 
                 }}>
                   <Tab label="All Businesses" value="all" />
-                  <Tab label="Active" value="Active" />
-                  <Tab label="Inactive" value="Revoked" />
+                  <Tab label="Completed" value="Completed" />
+                  <Tab label="Declined" value="Declined" />
                   <Tab label="Pending" value="Pending" />
                 </TabList>
 
@@ -121,23 +121,14 @@ const Page = () => {
                       <Table>
                         <TableHead>
                           <TableRow>
-                            <TableCell></TableCell>
-                            <TableCell>Business Name</TableCell>
-                            <TableCell>Business Category</TableCell>
-                            <TableCell>Business Location</TableCell>
+                            <TableCell>Request Amount</TableCell>
                             <TableCell>Status</TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
                           {businesses.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((business) => (
                             <TableRow key={business?._id}>
-                              <TableCell>
-                              <Avatar src={business?.BusinessLogo}>
-                        </Avatar>
-                              </TableCell>
-                              <TableCell>{business?.BusinessName}</TableCell>
-                              <TableCell>{business?.BusinessCategory}</TableCell>
-                              <TableCell>{business?.BusinessLocation}</TableCell>
+                              <TableCell>{business?.Amount}</TableCell>
                               <TableCell>{business?.status}</TableCell>
                             </TableRow>
                           ))}
@@ -175,29 +166,20 @@ const Page = () => {
                       Error fetching businesses: {error.message}
                     </Typography>
                   )}
-                  {businesses.filter((business) => business.status === 'Active').length >= 0 && (
+                  {businesses.filter((business) => business.status === 'Complete').length >= 0 && (
                     <TableContainer>
                       <Table>
                         <TableHead>
                           <TableRow>
-                            <TableCell></TableCell>
-                            <TableCell>Business Name</TableCell>
-                            <TableCell>Business Category</TableCell>
-                            <TableCell>Business Location</TableCell>
-                            <TableCell>Business Type</TableCell>
+                          <TableCell>Request Amount</TableCell>
+                            <TableCell>Status</TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {businesses.filter((business) => business.status === 'Active').slice((page - 1) * itemsPerPage, page * itemsPerPage).map((business) => (
+                          {businesses.filter((business) => business.status === 'Complete').slice((page - 1) * itemsPerPage, page * itemsPerPage).map((business) => (
                             <TableRow key={business?._id}>
-                              <TableCell>
-                              <Avatar src={business?.BusinessLogo}>
-                        </Avatar>
-                              </TableCell>
-                               <TableCell>{business?.BusinessName}</TableCell>
-                              <TableCell>{business?.BusinessCategory}</TableCell>
-                              <TableCell>{business?.BusinessLocation}</TableCell>
-                              <TableCell>{business?.BusinessType}</TableCell>
+                            <TableCell>{business?.Amount}</TableCell>
+                            <TableCell>{business?.status}</TableCell>
                             </TableRow>
                           ))}
                         </TableBody>
@@ -206,7 +188,7 @@ const Page = () => {
                   )}
                   <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                     <Pagination
-                      count={Math.ceil(businesses.filter((business) => business.status === 'Active').length / itemsPerPage)}
+                      count={Math.ceil(businesses.filter((business) => business.status === 'Complete').length / itemsPerPage)}
                       page={page}
                       onChange={handlePageChange}
                       size="small"
@@ -225,43 +207,27 @@ const Page = () => {
                       Error fetching businesses: {error.message}
                     </Typography>
                   )}
-                  {businesses.filter((business) => business.status === 'Inactive').length >= 0 && (
+                  {businesses.filter((business) => business.status === 'Declined').length >= 0 && (
                     <TableContainer>
                       <Table>
                         <TableHead>
                           <TableRow>
-                            <TableCell></TableCell>
-                            <TableCell>Business Name</TableCell>
-                            <TableCell>Business Category</TableCell>
-                            <TableCell>Business Location</TableCell>
-                            <TableCell>Business Type</TableCell>
+                            <TableCell>Request Amount</TableCell>
+                            <TableCell>Status</TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {businesses.filter((business) => business.status === 'Revoked').slice((page - 1) * itemsPerPage, page * itemsPerPage).map((business) => (
+                          {businesses.filter((business) => business.status === 'Declined').slice((page - 1) * itemsPerPage, page * itemsPerPage).map((business) => (
                             <TableRow key={business?._id}>
-                              <TableCell>
-                              <Avatar src={business?.BusinessLogo}>
-                        </Avatar>
-                              </TableCell>
-                              <TableCell>{business?.BusinessName}</TableCell>
-                              <TableCell>{business?.BusinessCategory}</TableCell>
-                              <TableCell>{business?.BusinessLocation}</TableCell>
-                              <TableCell>{business?.BusinessType}</TableCell>
+                            <TableCell>{business?.Amount}</TableCell>
+                            <TableCell>{business?.status}</TableCell>
                             </TableRow>
                           ))}
                         </TableBody>
                       </Table>
                     </TableContainer>
                   )}
-                  <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <Pagination
-                      count={Math.ceil(businesses.filter((business) => business.status === 'Revoked').length / itemsPerPage)}
-                      page={page}
-                      onChange={handlePageChange}
-                      size="small"
-                    />
-                  </Box>
+                  
                 </TabPanel>
                 <TabPanel value="Pending">
                   {isLoading && (
@@ -279,24 +245,15 @@ const Page = () => {
                       <Table>
                         <TableHead>
                           <TableRow>
-                            <TableCell></TableCell>
-                            <TableCell>Business Name</TableCell>
-                            <TableCell>Business Category</TableCell>
-                            <TableCell>Business Location</TableCell>
-                            <TableCell>Business Type</TableCell>
+                            <TableCell>Request Amount</TableCell>
+                            <TableCell>Status</TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
                           {businesses.filter((business) => business.status === 'Pending').slice((page - 1) * itemsPerPage, page * itemsPerPage).map((business) => (
                             <TableRow key={business?._id}>
-                              <TableCell>
-                              <Avatar src={business?.BusinessLogo}>
-                        </Avatar>
-                              </TableCell>
-                              <TableCell>{business?.BusinessName}</TableCell>
-                              <TableCell>{business?.BusinessCategory}</TableCell>
-                              <TableCell>{business?.BusinessLocation}</TableCell>
-                              <TableCell>{business?.BusinessType}</TableCell>
+                            <TableCell>{business?.Amount}</TableCell>
+                            <TableCell>{business?.status}</TableCell>
                             </TableRow>
                           ))}
                         </TableBody>

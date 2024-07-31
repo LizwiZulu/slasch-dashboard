@@ -24,11 +24,12 @@ const useCustomers = (page, rowsPerPage) => {
 
   useEffect(() => {
     const token = localStorage.getItem("myToken");
-    const userEmail = localStorage.getItem("userEmail");
-    if (userEmail === "admin@adlinc.com") {
+    const userEmail = localStorage.getItem("role");
+    if (userEmail === "admin") {
       axios.get(url, {
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         params: {
           page: page + 1, // API uses 1-based indexing
@@ -36,6 +37,7 @@ const useCustomers = (page, rowsPerPage) => {
         },
       })
         .then((response) => {
+          console.log('Response ............', response)
           setCustomers(response.data.AllUsers);
           setTotal(response.data.total);
         })
@@ -63,11 +65,12 @@ const useOwners = (page, rowsPerPage) => {
 
   useEffect(() => {
     const token = localStorage.getItem("myToken");
-    const userEmail = localStorage.getItem("userEmail");
-    if (userEmail === "admin@adlinc.com") {
+    const userEmail = localStorage.getItem("role");
+    if (userEmail === "admin") {
       axios.get(ourl, {
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         params: {
           page: page + 1, // API uses 1-based indexing

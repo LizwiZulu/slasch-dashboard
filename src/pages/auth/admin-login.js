@@ -42,7 +42,7 @@ const Page = () => {
       try {
       
         await auth.signInAdmin(values.email, values.password);
-        router.push('/');
+        router.push('/users');
       } catch (err) {
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });

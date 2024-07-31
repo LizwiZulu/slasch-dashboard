@@ -174,9 +174,9 @@ export const AuthProvider = (props) => {
       },
       //withCredentials: false
     });
-    console.log("The response ..........", response.data.admin.name)
+    console.log("The response ..........", response)
    
-   const accessToken = response.data.token.token;
+   const accessToken = response.data.token;
    localStorage.setItem('myToken', accessToken);
    const userId = response.data.admin.id;
    localStorage.setItem('userId', userId);

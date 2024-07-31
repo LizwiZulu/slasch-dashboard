@@ -11,22 +11,15 @@ import UserPlusIcon from '@heroicons/react/24/solid/UserPlusIcon';
 import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
 import XCircleIcon from '@heroicons/react/24/solid/XCircleIcon';
 import { SvgIcon } from '@mui/material';
+import { BanknotesIcon, MegaphoneIcon } from '@heroicons/react/24/solid';
 
 let items = [];
 
 // Fix: Using loose comparison (==) for email check (not recommended for production)
-if (typeof localStorage !== 'undefined' && localStorage.getItem("userEmail") == "admin@adlinc.com") {
-  console.log("IF STATEMENT EXECUTED");
+if (typeof localStorage !== 'undefined' && localStorage.getItem("role") == "admin") {
+  //console.log("IF STATEMENT EXECUTED");
   items = [
-    {
-      title: 'Overview',
-      path: '/',
-      icon: (
-        <SvgIcon fontSize="small">
-          <ChartBarIcon />
-        </SvgIcon>
-      )
-    },
+    
     {
       title: 'Users',
       path: '/users',
@@ -44,7 +37,26 @@ if (typeof localStorage !== 'undefined' && localStorage.getItem("userEmail") == 
           <ShoppingBagIcon />
         </SvgIcon>
       )
-    }
+    },
+    {
+      title: 'Auctions',
+      path: '/allauctions',
+      icon: (
+        <SvgIcon fontSize="small">
+          <MegaphoneIcon />
+          
+        </SvgIcon>
+      )
+    },
+    {
+      title: 'Cash Out Requests',
+      path: '/cashouts',
+      icon: (
+        <SvgIcon fontSize="small">
+          <BanknotesIcon />
+        </SvgIcon>
+      )
+    },
   ];
 } else {
   console.log("ELSE STATEMENT EXECUTED");
