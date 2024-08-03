@@ -17,6 +17,8 @@ import {
 import { Scrollbar } from 'src/components/scrollbar';
 //import { getInitials } from '../utils/get-initials';
 import { SeverityPill } from 'src/components/severity-pill';
+import UserProfileAdmin from '../../pages/users/users-admin';
+import { useEffect, useState } from 'react';
 
 const statusMap = {
   Pending: 'warning',
@@ -42,6 +44,8 @@ export const OwnersTable = (props) => {
   const selectedSome = (selected.length > 0) && (selected.length < items.length);
   const selectedAll = (items.length > 0) && (selected.length === items.length);
 
+  const [currentBusiness, setCurrentBusiness] = useState({});
+  const [isShowBusiness, setIsShowBusiness] = useState(false);
   const handleChangePage = (event, newPage) => {
     onPageChange(newPage);
   };
@@ -50,6 +54,11 @@ export const OwnersTable = (props) => {
     onRowsPerPageChange(event.target.value);
   };
 
+  const handleViewBusiness = (e, newBusiness) => {
+    console.log("this is it ..... ", newBusiness)
+    setCurrentBusiness(newBusiness);
+    setIsShowBusiness(true);
+  };
   return (
     <Card>
       <Scrollbar>
@@ -97,6 +106,9 @@ export const OwnersTable = (props) => {
                     hover
                     key={customer._id}
                     selected={isSelected}
+                    onClick={(e)=>{
+                      handleViewBusiness(e, customer)
+                    }}
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
@@ -143,6 +155,10 @@ export const OwnersTable = (props) => {
               })}
             </TableBody>
           </Table>
+
+          {isShowBusiness && (
+        <UserProfileAdmin business = {currentBusiness}></UserProfileAdmin>
+      )}
         </Box>
       </Scrollbar>
       <TablePagination

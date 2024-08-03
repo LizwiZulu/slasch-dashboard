@@ -25,15 +25,19 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { PlusIcon } from '@heroicons/react/24/solid';
+import UserProfileAdmin from './businessdetails/business-details-admin';
 
 
 const aurl = 'https://adlinc-api.onrender.com/api/slaschapp/admin/businesses';
 
+
 const Page = () => {
   const [businesses, setBusinesses] = useState([]);
+  const [currentBusiness, setCurrentBusiness] = useState({});
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [isShowBusiness, setIsShowBusiness] = useState(false);
   const [error, setError] = useState(null);
   const [itemsPerPage, setItemsPerPage] = useState(6);
   const [currentTab, setCurrentTab] = useState('all');
@@ -64,6 +68,8 @@ const Page = () => {
     }
   }, [page, itemsPerPage]);
 
+ 
+
   const handlePageChange = (event, value) => {
     setPage(value);
   };
@@ -74,6 +80,12 @@ const Page = () => {
     setCurrentTab(newValue);
   };
 
+  const handleViewBusiness = (e, newBusiness) => {
+    console.log("this is it ..... ", newBusiness)
+    setCurrentBusiness(newBusiness);
+    setIsShowBusiness(true);
+  };
+
   return (
     <>
       <Head>
@@ -82,8 +94,6 @@ const Page = () => {
       <Box component="main" sx={{ flexGrow: 1, py: 3 }}>
         <Container maxWidth="xl">
           <Stack spacing={3}>
-
-
 
             <TabContext value={currentTab}>
 
@@ -130,7 +140,7 @@ const Page = () => {
                         </TableHead>
                         <TableBody>
                           {businesses.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((business) => (
-                            <TableRow key={business?._id}>
+                            <TableRow key={business?._id} onClick={(e)=>{handleViewBusiness(e, business)}}>
                               <TableCell>
                               <Avatar src={business?.BusinessLogo}>
                         </Avatar>
@@ -153,15 +163,6 @@ const Page = () => {
                       size="small"
                     />
                   </Box>
-
-                  {/* <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                  <Pagination
-                    count={totalPages}
-                    page={page}
-                    onChange={handlePageChange}
-                    size="small"
-                  />
-                </Box> */}
                 </TabPanel>
 
                 <TabPanel value="Active">
@@ -189,7 +190,7 @@ const Page = () => {
                         </TableHead>
                         <TableBody>
                           {businesses.filter((business) => business.status === 'Active').slice((page - 1) * itemsPerPage, page * itemsPerPage).map((business) => (
-                            <TableRow key={business?._id}>
+                            <TableRow key={business?._id} onClick={(e)=>{handleViewBusiness(e, business)}}>
                               <TableCell>
                               <Avatar src={business?.BusinessLogo}>
                         </Avatar>
@@ -239,7 +240,7 @@ const Page = () => {
                         </TableHead>
                         <TableBody>
                           {businesses.filter((business) => business.status === 'Revoked').slice((page - 1) * itemsPerPage, page * itemsPerPage).map((business) => (
-                            <TableRow key={business?._id}>
+                            <TableRow key={business?._id} onClick={(e)=>{handleViewBusiness(e, business)}}>
                               <TableCell>
                               <Avatar src={business?.BusinessLogo}>
                         </Avatar>
@@ -288,7 +289,7 @@ const Page = () => {
                         </TableHead>
                         <TableBody>
                           {businesses.filter((business) => business.status === 'Pending').slice((page - 1) * itemsPerPage, page * itemsPerPage).map((business) => (
-                            <TableRow key={business?._id}>
+                            <TableRow key={business?._id} onClick={(e)=>{handleViewBusiness(e, business)}}>
                               <TableCell>
                               <Avatar src={business?.BusinessLogo}>
                         </Avatar>
@@ -318,6 +319,9 @@ const Page = () => {
           </Stack>
         </Container>
       </Box>
+      {isShowBusiness && (
+        <UserProfileAdmin business = {currentBusiness}></UserProfileAdmin>
+      )}
 
     </>
   );
