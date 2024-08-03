@@ -134,11 +134,6 @@ export const AuthProvider = (props) => {
    
    localStorage.setItem('role', 'user');
     
-    console.log(email, password);
-    console.log(accessToken);
-    console.log(userId);
-    console.log(userEmail);
-    console.log(response.data);
     
 
 

@@ -99,38 +99,30 @@ export const AuctionCard = ({
           direction="row"
           spacing={1}
         >
-          <SvgIcon
-            color="info"
-            fontSize="small"
-          >
-            <CreditCardIcon />
-          </SvgIcon>
-          <Typography
-            color="text.secondary"
-            display="inline"
-            variant="body2"
-          >
-            Daily budget: <Typography color="text.primary"
-              display="inline"
-              variant="body2"> {campaignDailyBudget}  </Typography>
-          </Typography>
+          
+          
         </Stack>
 
-        <Stack
-          alignItems="center"
-          direction="row"
-          spacing={1}
-        >
+        {localStorage.getItem('role') == 'user' && (
 
-          <Button variant="contained" startIcon={<SvgIcon fontSize="small"><PencilIcon /></SvgIcon>} onClick={handleEditButtonClicked} >
-            Edit
-          </Button>  
+<Stack
+alignItems="center"
+direction="row"
+spacing={1}
+>
 
-          <Button variant="contained" startIcon={<SvgIcon fontSize="small"><EyeIcon /></SvgIcon>} onClick={handleViewButtonClicked}>
-            View
-          </Button>
+<Button variant="contained" startIcon={<SvgIcon fontSize="small"><PencilIcon /></SvgIcon>} onClick={handleEditButtonClicked} >
+  Edit
+</Button>  
 
-        </Stack>
+<Button variant="contained" startIcon={<SvgIcon fontSize="small"><EyeIcon /></SvgIcon>} onClick={handleViewButtonClicked}>
+  View
+</Button>
+
+</Stack>
+        )}
+
+
       </Stack>
       {showModal && (
         <Dialog open={showModal} onClose={() => setShowModal(false)}>
