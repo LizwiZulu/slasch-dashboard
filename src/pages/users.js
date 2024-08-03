@@ -78,6 +78,7 @@ const useOwners = (page, rowsPerPage) => {
         },
       })
         .then((response) => {
+          console.log('Owners.... ', response)
           setOwners(response.data.BusinessOwnersData);
           setTotal(response.data.total);
         })
@@ -138,7 +139,7 @@ const Page = () => {
         },
       })
         .then((response) => {
-          console.log("Fetched users:", response.data.AllUsers);
+         // console.log("Fetched users:", response.data.AllUsers);
           setData(response.data.AllUsers);
         })
         .catch((error) => {
@@ -223,6 +224,7 @@ const Page = () => {
           </Stack>
         </Container>
       </Box>
+      
     </>
   );
 };
