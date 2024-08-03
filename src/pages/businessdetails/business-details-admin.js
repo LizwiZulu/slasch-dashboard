@@ -29,16 +29,16 @@ const {
 business: {}
 } = props;
 
-const updateBusinessStatus = async (e, newValue) => {
+async function updateBusinessStatus(e, newValue) {
     const token = localStorage.getItem("myToken");
     console.log("Where I send...........",updateURL, props.business._id, newValue);
     axios.patch(`${updateURL}/${props.business._id}`, {
+        newStatus: newValue
+      },
+       {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
-      },
-      body: {
-        'newStatus': newValue
       }
     }).then((response) => {
         console.log('My response .... ', response)
