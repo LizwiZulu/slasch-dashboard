@@ -3,8 +3,10 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import { Grid, TextField, Button, FormControlLabel, Checkbox, Box, Typography, Paper, FormLabel, FormControl, FormHelperText } from '@mui/material';
+import { Grid, TextField, Button, FormControlLabel, InputLabel, MenuItem, Select, Checkbox, Box, Typography, Paper, FormLabel, FormControl, FormHelperText } from '@mui/material';
 import { app, auth, storage } from 'src/firebase/config';
+
+import Autocomplete from "react-google-autocomplete";
 
 const url = 'https://adlinc-api.onrender.com/api/slaschapp/business';
 
@@ -50,9 +52,9 @@ export const Business = ({ _id }) => {
     BusinessCategory: '',
     BusinessLocation: '',
     BusinessHours: '',
-    BusinessLogo: '',
+    BusinessLogo: 'none',
     verificationDoc: '',
-    socials: '',
+    socials: 'none',
     status: 'Pending',
     BusinessBio: '',
     BusinessType: '',
@@ -168,7 +170,23 @@ export const Business = ({ _id }) => {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
+            <FormControl fullWidth>
+                  <InputLabel id="BusinessType">Business Type</InputLabel>
+                  <Select
+                    labelId="BusinessType"
+                    id="BusinessType"
+                    value={business.BusinessType}
+                    label="Business Type"
+                    onChange={(event) => setBusiness({ ...business, BusinessType: event.target.value })}
+                    renderValue={(selected)=> selected}
+                  >
+                    <MenuItem value={'Informal/Unregistered'}>Informal/Unregistered</MenuItem>
+                    <MenuItem value={'Sole Proprietor'}>Sole Proprietor</MenuItem>
+                    <MenuItem value={'Registered'}>Registered</MenuItem>
+                  </Select>
+                </FormControl>
+
+              {/* <TextField
                 required
                 id="BusinessType"
                 name="BusinessType"
@@ -176,7 +194,7 @@ export const Business = ({ _id }) => {
                 value={business.BusinessType}
                 onChange={(event) => setBusiness({ ...business, BusinessType: event.target.value })}
                 fullWidth
-              />
+              /> */}
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -228,6 +246,21 @@ export const Business = ({ _id }) => {
             </Grid>
 
             <Grid item xs={12} sm={6}>
+              {/* <FormControl fullWidth>
+              <Autocomplete
+                name="locationOrAddress"
+                  apiKey={'AIzaSyBpALLpJ_BiVXtnq6XV06BRVWFN68nwADk'}
+                  options={{
+                    types: ["address"],
+                    componentRestrictions: {country: 'za'}
+                  }}
+                  onPlaceSelected={(place) => {
+                    
+                    console.log(place)
+                  }}
+                />
+              </FormControl> */}
+            
               <TextField
                 required
                 id="BusinessLocation"
@@ -238,28 +271,9 @@ export const Business = ({ _id }) => {
                 fullWidth
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="BusinessHours"
-                name="BusinessHours"
-                label="Business Hours"
-                value={business.BusinessHours}
-                onChange={(event) => setBusiness({ ...business, BusinessHours: event.target.value })}
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="socials"
-                name="socials"
-                label="Socials"
-                value={business.socials}
-                onChange={(event) => setBusiness({ ...business, socials: event.target.value })}
-                fullWidth
-              />
-            </Grid>
+
+            
+
             <Grid item xs={12} sm={6}>
               <FormControl required>
                 <FormLabel>Business Logo</FormLabel>
@@ -286,6 +300,35 @@ export const Business = ({ _id }) => {
                   />
                 }
                 label="Accept Terms and Conditions"
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+              style={{
+                display: 'none'
+              }}
+                required
+                id="BusinessHours"
+                name="BusinessHours"
+                label="Business Hours"
+                value={business.BusinessHours}
+                onChange={(event) => setBusiness({ ...business, BusinessHours: event.target.value })}
+                fullWidth
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                style={{
+                  display: 'none'
+                }}
+                required
+                id="socials"
+                name="socials"
+                label="Socials"
+                value={business.socials}
+                onChange={(event) => setBusiness({ ...business, socials: event.target.value })}
+                fullWidth
               />
             </Grid>
             <Grid item xs={12}>

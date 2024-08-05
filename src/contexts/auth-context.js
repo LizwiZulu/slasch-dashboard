@@ -233,7 +233,7 @@ export const AuthProvider = (props) => {
             'Content-Type': 'application/json'
           }
         });
-       // console.log(response);
+        console.log(response);
       } catch (error) {
         console.error('Error registering user:', error);
         if (error.response) {
@@ -241,16 +241,7 @@ export const AuthProvider = (props) => {
           console.error('Error data:', error.response.data);
         }
       }
-     /*  const response = await axios.post('https://adlinc-api.onrender.com/api/slaschapp/auth/register/owner', userData, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-  
-      if (response.status !== 201) {
-        throw new Error('There was an error registering the user');
-        
-      } */
+     
 
       console.log(response.data.id);
   

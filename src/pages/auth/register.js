@@ -3,11 +3,13 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { Box, Button, Link, Stack, TextField, Typography, Checkbox, FormControlLabel } from '@mui/material';
+import { Box, Button, Link, Stack, TextField, Typography, Checkbox, FormControlLabel, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { useAuth } from 'src/hooks/use-auth';
 import { Layout as AuthLayout } from 'src/layouts/auth/layout';
 import { app, auth, storage } from 'src/firebase/config';
 import { styled } from '@mui/material/styles';
+import Autocomplete from "react-google-autocomplete";
+import { type } from 'os';
 
 const Input = styled('input')({
   display: 'none',
@@ -87,7 +89,7 @@ const Page = () => {
     },
   });
 
-  console.log(formik.values);
+  //console.log(formik.values);
 
   return (
     <>
@@ -216,7 +218,21 @@ const Page = () => {
                   type="password"
                   value={formik.values.password}
                 />
-                <TextField
+
+                <Autocomplete
+                name="locationOrAddress"
+                  apiKey={'AIzaSyBpALLpJ_BiVXtnq6XV06BRVWFN68nwADk'}
+                  options={{
+                    types: ["address"],
+                    componentRestrictions: {country: 'za'}
+                  }}
+                  onPlaceSelected={(place) => {
+                    
+                    formik.handleChange
+                  }}
+                />
+
+                {/* <TextField
                   error={!!(formik.touched.locationOrAddress && formik.errors.locationOrAddress)}
                   fullWidth
                   helperText={formik.touched.locationOrAddress && formik.errors.locationOrAddress}
@@ -225,7 +241,7 @@ const Page = () => {
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
                   value={formik.values.locationOrAddress}
-                />
+                /> */}
                 <TextField
                   error={!!(formik.touched.birthday && formik.errors.birthday)}
                   fullWidth
@@ -253,7 +269,26 @@ const Page = () => {
                   value={formik.values.status}
                   style={{ display: 'none' }}
                 />
-                <TextField
+
+                <FormControl fullWidth>
+                  <InputLabel id="gender">Gender</InputLabel>
+                  <Select
+                    labelId="gender"
+                    id="gender"
+                    value={formik.values.gender}
+                    label="Gender"
+                    onChange={(e)=>{
+                      formik.handleChange
+                      formik.setFieldValue('gender', e.target.value)
+                    }}
+                    renderValue={(selected)=> selected}
+                  >
+                    <MenuItem value={'male'}>Male</MenuItem>
+                    <MenuItem value={'female'}>Female</MenuItem>
+                    <MenuItem value={'other'}>Other</MenuItem>
+                  </Select>
+                </FormControl>
+                {/* <TextField
                   error={!!(formik.touched.gender && formik.errors.gender)}
                   fullWidth
                   helperText={formik.touched.gender && formik.errors.gender}
@@ -262,9 +297,9 @@ const Page = () => {
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
                   value={formik.values.gender}
-                />
+                /> */}
                  <Input 
-                  accept="*" 
+                  accept="application/pdf" 
                   error={!!(formik.touched.IdDocumentLink && formik.errors.IdDocumentLink)}
                   helperText={formik.touched.IdDocumentLink && formik.errors.IdDocumentLink}
                   id="IdDocumentLink" 
