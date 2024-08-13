@@ -42,8 +42,6 @@ const Page = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(6);
 
-  console.log("Business Id:", busId);
-  console.log("Auction Id:", auctionId);
 
   useEffect(() => {
     const token = localStorage.getItem('myToken');
@@ -58,7 +56,7 @@ const Page = () => {
       },
     });
 
-    const fetchBaits = axios.get(`${url}bait/auction/${auctionId}/bait`, {
+    const fetchBaits = axios.get(`${url}business/auction/${auctionId}/bait`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
@@ -68,11 +66,11 @@ const Page = () => {
     Promise.all([fetchAuction, fetchBaits])
       .then((response) => {
         setAuction(response[0].data.auctionData);
-        setBaits(response[1].data);
+        setBaits(response[1].data.baits);
         setTotalPages(Math.ceil(response[1].data.total / itemsPerPage));
 
-        console.log("Fetched auction:", response[0].data.auctionData);
-        console.log(response[1].data);
+        console.log("Fetched auction:", response[1].data.baits);
+        //console.log(response[1].data);
       })
       .catch((error) => {
         setError(error);
@@ -150,12 +148,7 @@ const Page = () => {
                         </Typography></TableCell>
                         <TableCell>{auction.campaignBudget}</TableCell>
                       </TableRow>
-                      <TableRow>
-                        <TableCell><Typography color="text.secondary" variant="body2">
-                          Daily Budget
-                        </Typography></TableCell>
-                        <TableCell>{auction.campaignDailyBudget}</TableCell>
-                      </TableRow>
+                      
 
                     </TableBody>
                   </Table>
@@ -175,7 +168,7 @@ const Page = () => {
             {baits && (
               <Grid container spacing={3}>
                 {baits.map((product) => (
-                  <Grid xs={12} md={6} lg={4} key={product.id}>
+                  <Grid xs={12} md={6} mx={2} lg={4} key={product.id}>
 
                     <BaitplantCard product={product} />
                   </Grid>
