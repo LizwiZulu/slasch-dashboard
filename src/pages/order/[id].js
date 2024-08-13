@@ -51,6 +51,7 @@ const Page = () => {
             'Authorization': `Bearer ${token}`,
           },
         });
+       
         setOrder(response.data.orders);
         setStatus(response.data.status);
         setLoading(false);

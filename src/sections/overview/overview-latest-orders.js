@@ -42,8 +42,12 @@ export const OverviewLatestOrders = (props) => {
       },
     })
       .then(response => {
-        setOrders(response.data.orders);
-        setLoading(false);
+        if(response.data.orders == null){
+          console.log('No orders')
+        } else {
+          setOrders(response.data.orders);
+          setLoading(false);
+        }
 
         console.log("Returned orders:", response.data)
       })
