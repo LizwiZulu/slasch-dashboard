@@ -42,10 +42,15 @@ const Page = () => {
             },
         })
             .then(response => {
-                setOrders(response.data.orders);
-                setLoading(false);
+                if(response.data.orders == null){
+                    setOrders([])
+                } else {
+                    setOrders(response.data.orders);
+                    setLoading(false);
+                }
+                
 
-                console.log(orders)
+                console.log('Here I am ..........',response.data)
             })
             .catch(error => {
                 setError(error);
@@ -55,7 +60,8 @@ const Page = () => {
 
     return (
         <>
-            <Box component="main" sx={{ flexGrow: 1, py: 3 }}>
+            {orders.length != 0 ?
+                <Box component="main" sx={{ flexGrow: 1, py: 3 }}>
                 <Container maxWidth="xl">
                     <Stack spacing={2}>
 
@@ -134,6 +140,10 @@ const Page = () => {
                     </Stack>
                 </Container>
             </Box >
+        : <Box>
+            <p>There are no orders available</p>
+        </Box>    
+        }
         </>
     );
 };
