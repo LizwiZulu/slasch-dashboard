@@ -66,7 +66,7 @@ const Page = () => (
               difference={0}
               positive
               sx={{ height: '100%' }}
-              value="--"
+              value= {localStorage.getItem('wallet')}
             />
           </Grid>
           <Grid
@@ -78,7 +78,7 @@ const Page = () => (
               difference={0}
               positive={false}
               sx={{ height: '100%' }}
-              value="--"
+              value= {localStorage.getItem('rewards')}
             />
           </Grid>
           <Grid

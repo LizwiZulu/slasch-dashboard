@@ -127,6 +127,7 @@ const Page = () => {
 
   const { owners, total: ownersTotal } = useOwners(page, rowsPerPage);
   const ownersSelection = useOwnersSelection(owners);
+  localStorage.setItem('userRole', 'users')
 
   useEffect(() => {
     const token = localStorage.getItem("myToken");
@@ -167,6 +168,7 @@ const Page = () => {
 
   const handleTabChange = (event, newValue) => {
     setCurrentTab(newValue);
+    localStorage.setItem('userRole', newValue);
   };
 
   return (

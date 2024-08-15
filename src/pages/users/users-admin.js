@@ -22,10 +22,11 @@ import { CheckIcon } from '@heroicons/react/24/solid';
 import { ClearIcon } from '@mui/x-date-pickers';
 
 const updateURL = 'https://adlinc-api.onrender.com/api/slaschapp/admin/validate/owner';
+const updateURLUser = 'https://adlinc-api.onrender.com/api/slaschapp/admin/activate/user';
 
 
 export const BusinessDetailsAdmin = (props) => {
-const {
+let {
 business: {}
 } = props;
 
@@ -33,6 +34,29 @@ async function updateBusinessStatus(e, newValue) {
     const token = localStorage.getItem("myToken");
     console.log("Where I send...........",updateURL, props.business._id, newValue);
    await axios.patch(`${updateURL}/${props.business._id}`, {
+    newStatus: newValue
+  },
+  {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      
+    },
+     ).then((response) => {
+        console.log('My response .... ', response)
+        if(response.status == 200){
+            window.location.reload()
+        } else {
+            Alert('There was an error updating business status. Please try again.')
+        }
+    })
+  }
+
+  async function updateBusinessStatusUser(e, newValue) {
+    const token = localStorage.getItem("myToken");
+    //console.log("Where I send...........",updateURL, props.business._id, newValue);
+   await axios.patch(`${updateURLUser}/${props.business._id}`, {
     newStatus: newValue
   },
   {
@@ -83,7 +107,13 @@ return (
                 <Grid>
                     <Stack direction="row" justifyContent="space-between" spacing={4} my={3}>
                         {props.business?.status == 'Active' && (
-                            <Button color='error' variant="contained" startIcon={<SvgIcon fontSize="small"><ClearIcon /></SvgIcon>} onClick={(e)=>{updateBusinessStatus(e, 'Revoked')}}>
+                            <Button color='error' variant="contained" startIcon={<SvgIcon fontSize="small"><ClearIcon /></SvgIcon>} onClick={(e)=>{
+                              if(localStorage.getItem('userRole') == 'users'){
+                                updateBusinessStatusUser(e, 'Revoked')
+                              } else {
+                                updateBusinessStatus(e, 'Revoked')
+                              }
+                              }}>
                             Revoke Account
                           </Button>
                         )}
@@ -91,12 +121,22 @@ return (
                         {props.business?.status == 'Pending' && (
                             <>
                             <div>
-                <Button color='success' variant="contained" startIcon={<SvgIcon fontSize="small"><CheckIcon /></SvgIcon>} onClick={(e)=>{updateBusinessStatus(e, 'Active')}}>
+                <Button color='success' variant="contained" startIcon={<SvgIcon fontSize="small"><CheckIcon /></SvgIcon>} onClick={(e)=>{
+                   if(localStorage.getItem('userRole') == 'users'){
+                    updateBusinessStatusUser(e, 'Revoked')
+                  } else{
+                  updateBusinessStatus(e, 'Active')
+                }}}>
                   Approve Account
                 </Button>
               </div> 
                <div>
-                <Button color='error' variant="contained" startIcon={<SvgIcon fontSize="small"><ClearIcon /></SvgIcon>} onClick={(e)=>{updateBusinessStatus(e, 'Revoked')}}>
+                <Button color='error' variant="contained" startIcon={<SvgIcon fontSize="small"><ClearIcon /></SvgIcon>} onClick={(e)=>{
+                   if(localStorage.getItem('userRole') == 'users'){
+                    updateBusinessStatusUser(e, 'Revoked')
+                  } else {
+                  updateBusinessStatus(e, 'Revoked')}
+                  }}>
                   Reject Account
                 </Button>
               </div> 
@@ -104,7 +144,12 @@ return (
                         )}
 
                         {props.business?.status == 'Revoked' && (
-                            <Button color='success' variant="contained" startIcon={<SvgIcon fontSize="small"><CheckIcon /></SvgIcon>} onClick={(e)=>{updateBusinessStatus(e, 'Active')}}>
+                            <Button color='success' variant="contained" startIcon={<SvgIcon fontSize="small"><CheckIcon /></SvgIcon>} onClick={(e)=>{
+                              if(localStorage.getItem('userRole') == 'users'){
+                                updateBusinessStatusUser(e, 'Revoked')
+                              } else{
+                              updateBusinessStatus(e, 'Active')}
+                              }}>
                             Re-activate Account
                           </Button>
                         )}
@@ -162,8 +207,18 @@ return (
                 </Grid>
 
               </Grid>
+
+             {
+              localStorage.getItem('userRole') =='users'
+              ?<>
+              <Container></Container>
+              </>
+              : <>
               <h3>User Verification Document</h3>
               <iframe src={props.business?.IdDocumentLink} height="500" title='Verification Document'></iframe>
+              </>
+              
+              }
 
             
             </Card>

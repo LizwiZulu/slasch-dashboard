@@ -15,6 +15,8 @@ import {
   Typography
 } from '@mui/material';
 import { Scrollbar } from 'src/components/scrollbar';
+import UserProfileAdmin from '../../pages/users/users-admin'
+import { useEffect, useState } from 'react';
 //import { getInitials } from '../utils/get-initials';
 
 export const UsersTable = (props) => {
@@ -34,6 +36,14 @@ export const UsersTable = (props) => {
 
   const selectedSome = (selected.length > 0) && (selected.length < items.length);
   const selectedAll = (items.length > 0) && (selected.length === items.length);
+
+  const [currentBusiness, setCurrentBusiness] = useState({});
+  const [isShowBusiness, setIsShowBusiness] = useState(false);
+  const handleViewBusiness = (e, newBusiness) => {
+    console.log("this is it ..... ", newBusiness)
+    setCurrentBusiness(newBusiness);
+    setIsShowBusiness(true);
+  };
 
   const handleChangePage = (event, newPage) => {
     onPageChange(newPage);
@@ -90,6 +100,9 @@ export const UsersTable = (props) => {
                     hover
                     key={customer._id}
                     selected={isSelected}
+                    onClick={(e)=>{
+                      handleViewBusiness(e, customer)
+                    }}
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
@@ -134,6 +147,9 @@ export const UsersTable = (props) => {
               })}
             </TableBody>
           </Table>
+          {isShowBusiness && (
+        <UserProfileAdmin business = {currentBusiness}></UserProfileAdmin>
+      )}
         </Box>
       </Scrollbar>
       <TablePagination

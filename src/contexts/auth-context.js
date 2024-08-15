@@ -120,6 +120,8 @@ export const AuthProvider = (props) => {
       },
       //withCredentials: false
     });
+
+    console.log('This is it .........', response.data)
    
    const accessToken = response.data.token.token;
    localStorage.setItem('myToken', accessToken);
@@ -133,6 +135,8 @@ export const AuthProvider = (props) => {
    localStorage.setItem('surname', surname);
    
    localStorage.setItem('role', 'user');
+   localStorage.setItem('wallet', response.data.owner.wallet);
+   localStorage.setItem('rewards', response.data.owner.acquisitionBidsPaid);
     
     
 
