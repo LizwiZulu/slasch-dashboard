@@ -3,12 +3,14 @@ import ArrowDownIcon from '@heroicons/react/24/solid/ArrowDownIcon';
 import ArrowUpIcon from '@heroicons/react/24/solid/ArrowUpIcon';
 import CurrencyDollarIcon from '@heroicons/react/24/solid/CurrencyDollarIcon';
 import { Avatar, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
 
 export const OverviewBudget = (props) => {
   const { difference, positive = false, sx, value } = props;
 
+  const router = useRouter();
   return (
-    <Card sx={sx}>
+    <Card sx={sx} onClick={(e)=>{router.push('/wallet')}}>
       <CardContent>
         <Stack
           alignItems="flex-start"
